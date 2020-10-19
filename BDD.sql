@@ -1,0 +1,46 @@
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE Users (
+    id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nom VACHAR(30) NOT NULL,
+    prenom VACHAR(30) NOT NULL,
+    poste VACHAR(30) NOT NULL,
+    email VACHAR(100) NOT NULL,
+    mot_de_passe VACHAR(100) NOT NULL,
+    photo_url VACHAR(100) DEFAULT NULL,
+    photo_alt VACHAR(30) DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY (id),
+    UNIQUE KEY email (email),
+)
+ENGINE = INNODB DEFAULT CHARSET=utf8mb4;
+
+
+
+DROP TABLE IF EXISTS Post;
+
+CREATE TABLE IF NOT EXISTS Post (
+    id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    users_id SMALLINT NOT NULL,
+    content text DEFAULT NULL,
+    gif_url VACHAR(100) NULL,
+    gif_alt VACHAR(30) DEFAULT NULL,
+    date_creation datetime NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY (id),
+    CONSTRAINT user_post FOREIGN KEY (Users) REFERENCES Users(id)
+) ENGINE = INNOD DEFAULT CHARSET=utf8mb4B;
+
+
+
+DROP TABLE IF EXISTS Commentaires;
+
+CREATE TABLE IF NOT EXISTS Commentaires (
+    id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    users_id SMALLINT NOT NULL,
+    comment text DEFAULT NULL,
+    date_creation datetime NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY (id),
+    CONSTRAINT user_comment FOREIGN KEY (Users) REFERENCES Users(id)
+) ENGINE = INNODB DEFAULT CHARSET=utf8mb4;
