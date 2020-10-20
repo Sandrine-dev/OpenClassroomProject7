@@ -4,17 +4,17 @@ DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
     id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    nom VACHAR(30) NOT NULL,
-    prenom VACHAR(30) NOT NULL,
-    poste VACHAR(30) NOT NULL,
-    email VACHAR(100) NOT NULL,
-    mot_de_passe VACHAR(100) NOT NULL,
-    photo_url VACHAR(100) DEFAULT NULL,
-    photo_alt VACHAR(30) DEFAULT NULL,
+    nom VARCHAR(30) NOT NULL,
+    prenom VARCHAR(30) NOT NULL,
+    poste VARCHAR(30) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    mot_de_passe VARCHAR(100) NOT NULL,
+    photo_url VARCHAR(100) DEFAULT NULL,
+    photo_alt VARCHAR(30) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY (id),
-    UNIQUE KEY email (email),
-)ENGINE = INNODB;
+    UNIQUE KEY email (email)
+) ENGINE = INNODB;
 
 LOCK TABLES Users WRITE;
 
@@ -24,16 +24,17 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS Post;
 
+
 CREATE TABLE IF NOT EXISTS Post (
     id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     users_id SMALLINT NOT NULL,
     content text DEFAULT NULL,
-    gif_url VACHAR(100) NULL,
-    gif_alt VACHAR(30) DEFAULT NULL,
+    gif_url VARCHAR(100) NULL,
+    gif_alt VARCHAR(30) DEFAULT NULL,
     date_creation datetime NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY (id),
-    CONSTRAINT user_post FOREIGN KEY (Users) REFERENCES Users(id)
+    UNIQUE KEY (id)
+    --CONSTRAINT user_post FOREIGN KEY (Users) REFERENCES Users(id)
 ) ENGINE = INNOD;
 
 LOCK TABLES Post WRITE;
@@ -50,8 +51,8 @@ CREATE TABLE IF NOT EXISTS Commentaires (
     comment text DEFAULT NULL,
     date_creation datetime NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY (id),
-    CONSTRAINT user_comment FOREIGN KEY (Users) REFERENCES Users(id)
+    UNIQUE KEY (id)
+    --CONSTRAINT user_comment FOREIGN KEY (Users) REFERENCES Users(id)
 ) ENGINE = INNODB;
 
 LOCK TABLES Commentaires WRITE;
