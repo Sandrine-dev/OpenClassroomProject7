@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 29 oct. 2020 à 10:31
+-- Généré le : ven. 30 oct. 2020 à 08:58
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -18,44 +18,69 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `groupomania`
+-- Base de données : `database_development_groupomania`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commentaires`
+-- Structure de la table `commentaire`
 --
 
-DROP TABLE IF EXISTS `commentaires`;
-CREATE TABLE IF NOT EXISTS `commentaires` (
+DROP TABLE IF EXISTS `commentaire`;
+CREATE TABLE IF NOT EXISTS `commentaire` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `users_id` int(11) NOT NULL,
-  `comment` text,
-  `date_creation` datetime NOT NULL,
+  `iduser` int(11) NOT NULL,
+  `idmessage` int(11) NOT NULL,
+  `commentaire` varchar(255) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `users_id` (`users_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `iduser` (`iduser`),
+  KEY `idmessage` (`idmessage`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `post`
+-- Structure de la table `messages`
 --
 
-DROP TABLE IF EXISTS `post`;
-CREATE TABLE IF NOT EXISTS `post` (
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `users_id` int(11) NOT NULL,
-  `content` text,
-  `gif_url` varchar(100) DEFAULT NULL,
-  `gif_alt` varchar(30) DEFAULT NULL,
-  `date_creation` datetime NOT NULL,
+  `iduser` int(11) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  `image_alt` varchar(255) DEFAULT NULL,
+  `likes` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `users_id` (`users_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `iduser` (`iduser`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `sequelizemeta`
+--
+
+DROP TABLE IF EXISTS `sequelizemeta`;
+CREATE TABLE IF NOT EXISTS `sequelizemeta` (
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Déchargement des données de la table `sequelizemeta`
+--
+
+INSERT INTO `sequelizemeta` (`name`) VALUES
+('20201030082644-create-user.js'),
+('20201030083000-create-message.js'),
+('20201030083117-create-commentaires.js');
 
 -- --------------------------------------------------------
 
@@ -66,33 +91,35 @@ CREATE TABLE IF NOT EXISTS `post` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(30) NOT NULL,
-  `prenom` varchar(30) NOT NULL,
-  `poste` varchar(30) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `mot_de_passe` varchar(255) NOT NULL,
-  `photo_url` varchar(100) DEFAULT NULL,
-  `photo_alt` varchar(30) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `poste` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `photo_url` varchar(255) DEFAULT NULL,
+  `photo_alt` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contraintes pour les tables déchargées
 --
 
 --
--- Contraintes pour la table `commentaires`
+-- Contraintes pour la table `commentaire`
 --
-ALTER TABLE `commentaires`
-  ADD CONSTRAINT `User_comment` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+ALTER TABLE `commentaire`
+  ADD CONSTRAINT `commentaire_ibfk_1` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `commentaire_ibfk_2` FOREIGN KEY (`idmessage`) REFERENCES `messages` (`id`);
 
 --
--- Contraintes pour la table `post`
+-- Contraintes pour la table `messages`
 --
-ALTER TABLE `post`
-  ADD CONSTRAINT `User_post` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
