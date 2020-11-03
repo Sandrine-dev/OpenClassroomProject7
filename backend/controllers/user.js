@@ -1,11 +1,14 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const jwtUtils = require('../utils/jwtutils');
 
 const models = require ('../models');
 
+//controllers routes
 module.exports = {
+    //signup route
     signup: function(req, res) {
 
+        //Params
         var email = req.body.email;
         var nom = req.body.nom;
         var prenom = req.body.prenom;
@@ -15,7 +18,7 @@ module.exports = {
         var photoAlt = req.body.photo_alt;
 
         if (email == null || nom == null || password == null || prenom == null) {
-            return res.status(400).json({ 'error' : ' missing parameters'});
+            return res.status(400).json({ 'error' : 'Paramètres manquant'});
         }
 
         models.User.findOne({
@@ -41,7 +44,7 @@ module.exports = {
                         })
                     })
                     .catch(function(err) {
-                        return res.status(500).json ({ 'error': 'cannot add user'});
+                        return res.status(500).json ({ 'error': 'Impossible d\'ajouter cet utilisateur'});
                     })
                 })
 
@@ -56,7 +59,43 @@ module.exports = {
         
 
     },
+
+    //login route
     login: function(req, res) {
         
+        //Params
+        var email = req.body.email;
+        var password = req.body.password;
+
+        if (email == null || password == null) {
+            return res.status(400).json({ 'error' : 'Paramètres manquant'})
+        }
+
+        models.User.findOne({
+            where: { email: email }
+        })
+        .then(function(userFound) {
+
+            if(userFound){
+
+                bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
+                    if(resBycrypt) {
+                        return res.status(200).json({
+                            'userId': userFound.id,
+                            'token': jwtUtils.generateTokenForUser(userFound)
+                        });
+                    } else {
+                        return res.status(403).json({'error': 'mot de passe érroné'});
+                    }
+                });
+
+            } else {
+                return res.status(404).json({ 'error' : 'Utilisateurs incconue'});
+            }
+
+        })
+        .catch(function(err) {
+            return res.status(500).json({'error': 'Impossible de vérifier l\'utilisateur'});
+        });
     }
 };
