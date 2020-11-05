@@ -1,5 +1,5 @@
 //Imports
-const jwt = require('jsonwebtoken');
+var jwt = require('jsonwebtoken');
 
 const JWT_SIGN_SECRET = '1Jebau59jyeDG83F4sfrbsu70sdfseFHH56148Ashulae78vsDeb';
 
@@ -13,5 +13,20 @@ module.exports = {
       {
           expiresIn: '12h'
       })
+  },
+  parseAuthorization: function(authorization) {
+      return (authorization != null) ? authorization.replace('Bearer ', '') : null;
+  },
+  getUserId: function(authorization) {
+      var userId = -1;
+      var token = module.exports.parseAuthorization(authorization);
+      if(token != null) {
+          try{
+              var jwtToken = jwt.verify(token, JWT_SIGN_SECRET);
+              if(jwtToken != null)
+                userID = jwtToken.userId;
+          } catch(err) {  }
+      }
+      return userId;
   }
 };
