@@ -24,7 +24,7 @@ module.exports = {
           try{
               var jwtToken = jwt.verify(token, JWT_SIGN_SECRET);
               if(jwtToken != null)
-                userID = jwtToken.userId;
+                userId = jwtToken.userId;
           } catch(err) {  }
       }
       return userId;
