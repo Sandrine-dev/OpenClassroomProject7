@@ -1,7 +1,11 @@
+//Imports
 const bcrypt = require('bcrypt');
 const jwtUtils = require('../utils/jwtutils');
-
 const models = require ('../models');
+
+//const utile
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 
 //controllers routes
 module.exports = {
@@ -17,9 +21,34 @@ module.exports = {
         var photoUrl = req.body.photo_url;
         var photoAlt = req.body.photo_alt;
 
+        //Verification que tous est bien tapé correctement par l'utilisateur
+
         if (email == null || nom == null || password == null || prenom == null) {
             return res.status(400).json({ 'error' : 'Paramètres manquant'});
         }
+
+        if (nom.length >= 20 || nom.length <= 4) {
+            return res.status(400).json({ 'error' : 'le nom doit avoir un nombre de caractère entre 4 et 20.'});
+        }
+
+        if (prenom.length >=25 || prenom.length <=4) {
+            return res.status(400).json({ 'error' : 'le prenom doit avoir un nombre de caractère entre 4 et 20.'});
+        }
+
+        if (!EMAIL_REGEX.test(email)){
+            return res.status(400).json({ 'error' : 'email invalide!'});
+        }
+
+        if (!PASSWORD_REGEX.test(password)){
+            return res.status(400).json({ 'error' : 'le mot de passe est invalide, il doit avoir 4 à 8 caractère et inclure un nombre.'});
+        }
+
+
+
+
+
+
+
 
         models.User.findOne({
             attributes: ['email'],
