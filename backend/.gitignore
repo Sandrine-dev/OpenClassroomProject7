@@ -4,3 +4,4 @@ migrations
 seeders
 package.json
 package-lock.json
+utils
