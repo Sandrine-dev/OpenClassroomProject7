@@ -175,7 +175,7 @@ module.exports = {
         }).catch(function(err) {
             res.status(500).json({ 'error' : 'Impossible d\'aller chercher l\'utilisateur'})
         });
-    /*},
+    },
     
     updateUserProfile: function(req, res) {
 
@@ -224,6 +224,6 @@ module.exports = {
             } else {
                 return res.status(500).json({ 'error': 'Impossible d\'actualisé le profile' });
             }
-        });*/
+        });
     }
 }
