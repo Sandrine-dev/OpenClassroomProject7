@@ -6,7 +6,7 @@ const messageCtrl = require('../controllers/message');
 
 //Routes
 router.post('/messages/new', messageCtrl.createMessage);
-router.get('/messages', messageCtrl.listMessage);
+//router.get('/messages', messageCtrl.listMessage);
 
 
 module.exports = router;

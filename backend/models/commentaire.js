@@ -2,8 +2,6 @@
 
 module.exports = (sequelize, DataTypes) => {
   var Commentaire = sequelize.define('Commentaire', {
- 	idUSERS: DataTypes.INTEGER,
-    	idMESSAGES: DataTypes.INTEGER,
     	commentaire: DataTypes.STRING
   }, {
     classMethods: {
