@@ -2,8 +2,7 @@
 
 module.exports = (sequelize, DataTypes) => {
   var Message = sequelize.define('Message', {
- 	idUSERS: DataTypes.INTEGER,
-   	 message: DataTypes.STRING,
+   	  message: DataTypes.STRING,
     	image_url: DataTypes.STRING,
     	image_alt: DataTypes.STRING,
     	likes: DataTypes.INTEGER

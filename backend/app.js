@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/user');
+const messageRoutes = require ('./routes/message');
 
 //Instantiate server
 const app = express();
@@ -19,5 +20,6 @@ app.use(bodyParser.json());
 
 //Api routes
 app.use('/api', userRoutes);
+app.use('/api', messageRoutes);
 
 module.exports = app;
