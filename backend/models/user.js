@@ -9,8 +9,18 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     photo_url: DataTypes.STRING,
     photo_alt: DataTypes.STRING
-  }, {
-    classMethods: {
+  }, { 
+
+  });
+  User.associate = (models) => {
+    User.hasMany(models.Message, {
+      foreignKey : 'userId',
+    });
+    User.hasMany(models.Commentaire, {
+      foreignKey: 'userId',
+    });
+  };
+    /*classMethods: {
       associate: function(models) {
          // define association here
       models.User.hasMany(models.Message);
@@ -18,6 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.Commentaire);
       }
     }
-  });
+  });*/
   return User;
 };

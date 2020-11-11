@@ -5,20 +5,23 @@ module.exports = (sequelize, DataTypes) => {
    	  message: DataTypes.STRING,
     	image_url: DataTypes.STRING,
     	image_alt: DataTypes.STRING,
-    	likes: DataTypes.INTEGER
+      likes: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER
   }, {
-    classMethods: {
+
+  });
+    Message.associate = (models) => {
+      Message.belongsTo(models.User, 
+        {foreignKey: 'userId'});
+    };
+    /*classMethods: {
       associate: function(models) {
          // define association here
         models.Message.hasMany(models.commentaire);
 
-        models.Message.belongsTo(models.User, {
-          foreignKey: {
-            allowNull: false
-          }
-        })
+        models.Message.belongsTo(models.User, {foreignKey: "userId"});
       }
     }
-  });
+  });*/
   return Message;
 };
