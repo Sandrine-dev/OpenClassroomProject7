@@ -11,8 +11,12 @@ module.exports = (sequelize, DataTypes) => {
 
   });
     Message.associate = (models) => {
-      Message.belongsTo(models.User, 
-        {foreignKey: 'userId'});
+      Message.belongsTo(models.User, {
+        foreignKey: 'userId',
+      });
+      Message.hasMany(models.Commentaire, {
+        foreignKey: 'message.id'
+      });
     };
     /*classMethods: {
       associate: function(models) {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 30 oct. 2020 à 08:58
+-- Généré le : mer. 11 nov. 2020 à 13:35
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -24,20 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commentaire`
+-- Structure de la table `commentaires`
 --
 
-DROP TABLE IF EXISTS `commentaire`;
-CREATE TABLE IF NOT EXISTS `commentaire` (
+DROP TABLE IF EXISTS `commentaires`;
+CREATE TABLE IF NOT EXISTS `commentaires` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `iduser` int(11) NOT NULL,
-  `idmessage` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `messageId` int(11) NOT NULL,
   `commentaire` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `iduser` (`iduser`),
-  KEY `idmessage` (`idmessage`)
+  KEY `userId` (`userId`),
+  KEY `messageId` (`messageId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
 DROP TABLE IF EXISTS `messages`;
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `iduser` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
   `message` varchar(255) NOT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `image_alt` varchar(255) DEFAULT NULL,
@@ -57,8 +57,17 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `iduser` (`iduser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `userId` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `messages`
+--
+
+INSERT INTO `messages` (`id`, `userId`, `message`, `image_url`, `image_alt`, `likes`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'Voici mon message', NULL, NULL, 0, '2020-11-11 10:41:46', '2020-11-11 10:41:46'),
+(2, 1, 'Un nouveau message', NULL, NULL, 0, '2020-11-11 13:23:39', '2020-11-11 13:23:39'),
+(3, 1, 'Et en voici encore un autre', NULL, NULL, 0, '2020-11-11 13:23:50', '2020-11-11 13:23:50');
 
 -- --------------------------------------------------------
 
@@ -78,9 +87,9 @@ CREATE TABLE IF NOT EXISTS `sequelizemeta` (
 --
 
 INSERT INTO `sequelizemeta` (`name`) VALUES
-('20201030082644-create-user.js'),
-('20201030083000-create-message.js'),
-('20201030083117-create-commentaires.js');
+('20201103084332-create-user.js'),
+('20201103084554-create-message.js'),
+('20201103084714-create-commentaires.js');
 
 -- --------------------------------------------------------
 
@@ -101,25 +110,32 @@ CREATE TABLE IF NOT EXISTS `users` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `nom`, `prenom`, `poste`, `password`, `photo_url`, `photo_alt`, `createdAt`, `updatedAt`) VALUES
+(1, 'Alice.green@outlook.fr', 'Green', 'Alice', NULL, '$2b$05$sMCCIuFxnJ0/DG47FfJU2OnfhQAqxGmUrkHO6zNDYee3AFMA6zDtC', NULL, NULL, '2020-11-11 10:40:16', '2020-11-11 10:40:16');
 
 --
 -- Contraintes pour les tables déchargées
 --
 
 --
--- Contraintes pour la table `commentaire`
+-- Contraintes pour la table `commentaires`
 --
-ALTER TABLE `commentaire`
-  ADD CONSTRAINT `commentaire_ibfk_1` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `commentaire_ibfk_2` FOREIGN KEY (`idmessage`) REFERENCES `messages` (`id`);
+ALTER TABLE `commentaires`
+  ADD CONSTRAINT `commentaires_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `commentaires_ibfk_2` FOREIGN KEY (`messageId`) REFERENCES `messages` (`id`);
 
 --
 -- Contraintes pour la table `messages`
 --
 ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

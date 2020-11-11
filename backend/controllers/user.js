@@ -80,6 +80,8 @@ module.exports = {
         
     //login route
     login: function(req, res) {
+
+        
         
         //Params
         var email = req.body.email;
@@ -89,6 +91,60 @@ module.exports = {
         if (email == null || password == null) {
             return res.status(400).json({ 'error' : 'Paramètres manquant'})
         }
+
+        /*
+        //waterfall
+
+        asyncLib.waterfall([
+            function(done) {
+                models.User.findOne({
+                    attributes: ['email'],
+                    where: { email: email }
+                })
+                .then(function(userFound) {
+                    done(null, userFound);
+                })
+                .catch(function(err) {
+                    return res.status(500).json({ 'error' : 'impossible de vérifier l\'utilisateur'});
+                });
+            },
+
+            function(userFound, done) {
+                if (!userFound) {
+                    bcrypt.hash(password, 5, function (err, bcryptedPassword ){
+                        done (null, userFound, bcryptedPassword);
+                    });
+                } else {
+                    return res.status(409).json({ 'error': 'Utilisateur déjà existant'});
+                }
+            },
+
+            function(userFound, bcryptedPassword, done) {
+                var newUser = models.User.create({
+                    email: email,
+                    nom: nom,
+                    prenom: prenom,
+                    poste: poste,
+                    password: bcryptedPassword,
+                    photoUrl: photoUrl,
+                    photoAlt: photoAlt
+                })
+                .then(function(newUser) {
+                    done(newUser);
+                })
+                .catch(function(err) {
+                    return res.status(500).json({ 'error' : 'Impposble d\'ajouter l\'utilisateur'});
+                });
+            }
+        ], function(newUser) {
+            if (newUser) {
+                return res.status(201).json({
+                    'userId' : newUser.id
+                });
+            } else {
+                return res.status(500).json({ 'error' : 'Impposble d\'ajouter l\'utilisateur'});
+            }
+        }); */
 
         models.User.findOne({
             where: { email: email }
@@ -153,6 +209,46 @@ module.exports = {
         var poste = req.body.poste;
         var photoUrl = req.body.photo_url
         var photoAlt = req.body.photo_alt
+
+        /* asyncLib.waterfall ([
+
+            function(done) {
+                models.User.findOne({
+                    where: { email: email }
+                })
+                .then(function(userFound) {
+                    done(null, userFound);
+                })
+                .catch(function(err){
+                    return res.status(500).json ({ 'error' : 'Impossible de vérifier l\'utilisateur'});
+                });                
+            },
+            function(userFound, done) {
+                if (userFound) {
+                    bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
+                        done(null, userFound, resBycrypt);
+                    });
+                } else {
+                    return res.status(404).json ({'error' : 'L\'Utilisateur n\'est pas dans notre base de données'});
+                }
+            },
+            function(userFound, resBycrypt, done) {
+                if(resBycrypt) {
+                  done(userFound);
+                } else {
+                  return res.status(403).json({ 'error': 'mot de passe invalide' });
+                }
+              }
+        ], function(userFound) {
+            if (userFound) {
+                return res.status(201).json({
+                    'userId': userFound.id,
+                    'token': jwtUtils.generateTokenForUser(userFound)
+                });
+            } else {
+                return res.status(500).json({'error': 'Connexion impossible'});
+            }
+        }); */
     
         
         models.User.findOne({
