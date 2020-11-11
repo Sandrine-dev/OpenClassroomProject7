@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
      }
    }
  }, {});
-  Like.associate= function (models) {
+  
+ Like.associate = (models) => {
     models.User.belongsToMany(models.Message, {
       through: models.Like,
       foreignKey: 'userId',
@@ -29,12 +30,12 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'userId',
     });
 
-    models.Like.belongsTo(models.User, {
+    Like.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'user',
     });
 
-    models.Like.belongsTo(models.Message, {
+    Like.belongsTo(models.Message, {
       foreignKey: 'messageId',
       as: 'message',
     });
