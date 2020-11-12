@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const jwtUtils = require('../utils/jwtutils');
 const models = require ('../models');
+const { where } = require('../../../Projet6/models/sauces');
 
 //const utile
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -74,7 +75,7 @@ module.exports = {
 
         })
         .catch(function(err){
-            return res.status(500).json ({ 'error' : 'impossible de vérifier l\'utilisateurs'});
+            return res.status(500).json ({ 'error' : 'impossible de vérifier l\'utilisateurs' + err});
         });
     },
         
@@ -207,8 +208,8 @@ module.exports = {
     
         // Params
         var poste = req.body.poste;
-        var photoUrl = req.body.photo_url
-        var photoAlt = req.body.photo_alt
+        var photoUrl = req.body.photo_url;
+        var photoAlt = req.body.photo_alt;
 
         /* asyncLib.waterfall ([
 
@@ -274,6 +275,42 @@ module.exports = {
         })
         .catch(function(err) {
             return res.status(500).json({'error' : 'Impossible de vérifier l\'utilisateur'});
+        });
+    },
+
+    deleteUserProfile: function(req, res) {
+
+        // récupéréer l'autorisation
+        var headerAuth  = req.headers['authorization'];
+        var userId      = jwtUtils.getUserId(headerAuth);
+
+        //Params
+        var email = req.body.email;
+        var password = req.body.password;
+
+        models.User.findOne({
+            where: {id: userId}
+        })
+
+        .then(function(userFound) {
+            if (userFound) {
+                bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
+                    if (resBycrypt) {
+                        userFound.destroy()
+                        .then (function (userFound) {
+                            return res.status(201).json({message: 'utilisateurs supprimé'});
+                        })
+                    }else {
+                        return res.status(403).json({ 'error' : 'mot de passe invalide'});
+                    }
+                })
+
+            } else {
+                    return res.status(404).json ({'error' : 'L\'Utilisateur n\'est pas dans notre base de données'});
+                }
+        })
+        .catch(function(err) {
+            return res.status(500).json ({ 'error': 'impossible de vérifier l\'utilisateur'})
         });
     }
 }
