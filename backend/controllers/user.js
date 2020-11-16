@@ -2,7 +2,6 @@
 const bcrypt = require('bcrypt');
 const jwtUtils = require('../utils/jwtutils');
 const models = require ('../models');
-const { where } = require('../../../Projet6/models/sauces');
 
 //const utile
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -297,7 +296,7 @@ module.exports = {
                 bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
                     if (resBycrypt) {
                         userFound.destroy()
-                        .then (function (userFound) {
+                        .then (function () {
                             return res.status(201).json({message: 'utilisateurs supprimé'});
                         })
                     }else {

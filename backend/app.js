@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/user');
 const messageRoutes = require ('./routes/message');
 const likeRoutes = require ('./routes/like');
+const commentRoutes = require ('./routes/commentaire')
 
 //Instantiate server
 const app = express();
@@ -23,5 +24,6 @@ app.use(bodyParser.json());
 app.use('/api', userRoutes);
 app.use('/api', messageRoutes);
 app.use('/api', likeRoutes);
+app.use('/api', commentRoutes);
 
 module.exports = app;

@@ -3,6 +3,9 @@ var models = require('../models');
 var jwtUtils = require ('../utils/jwtutils');
 var asyncLib = require ('async');
 
+const DISLIKED = 0;
+const LIKED = 1;
+
 module.exports = {
 
     likePost: function (req, res) {
@@ -44,7 +47,7 @@ module.exports = {
                         return res.status(500).json({ 'error' : 'impossible de vérifier l\'utilisateur'});
                     });
                 }else{
-                    res.status(404).json({'error': 'Message déjà aimé'});
+                    res.status(404).json({'error': 'Message déjà like' + err});
                 }
             },
             function(messageFound, userFound, done) {
@@ -55,8 +58,8 @@ module.exports = {
                             messageId: messageId
                         }
                     })
-                    .then(function(isUserAlreadyLiked) {
-                        done (null, messageFound, userFound, isUserAlreadyLiked);
+                    .then(function(UserAlreadyLiked) {
+                        done (null, messageFound, userFound, UserAlreadyLiked);
                     })
                     .catch(function(err) {
                         return res.status(500).json ({ 'error' : 'Impossible de savoir si l\'utilisateur à déjà aimé'});
@@ -65,22 +68,35 @@ module.exports = {
                     res.status(404).json({ 'error' : 'Utilisateur introuvable'});
                 }
             },
-            function(messageFound, userFound, isUserAlreadyLiked, done) {
-                if (!isUserAlreadyLiked) {
-                    messageFound.addUser(userFound)
+            function(messageFound, userFound, UserAlreadyLiked, done) {
+                if (!UserAlreadyLiked) {
+                    messageFound.addUser(userFound, {isLike : LIKED})
                     .then(function (alreadyLikeFound) {
-                        done(null, messageFound, userFound, isUserAlreadyLiked);
+                        done(null, messageFound, userFound);
                     })
                     .catch(function(err) {
                         return res.status(500).json ({ 'error' : 'impossible de prendre la réaction de l\'utilisateur'});
                     });
                 } else {
-                    res.status(409).json({ 'error' : 'message déjà aimé'});
+                    if (UserAlreadyLikedFound.isLike === DISLIKED) {
+                        UserAlreadyLikedFound.update({
+                            isLike: LIKED,
+                        })
+                        .then(function() {
+                            done(null, messageFound, userFound);
+                        })
+                        .catch(function(err) {
+                            res.status(500).json({'error': 'impossible de modifier la réaction' + err});
+                        });
+                    } else {
+                        res.status(409).json({ 'error' : 'message déjà aimé'});
+                    }
+                    
                 }
             },
             function(messageFound, userFound, done) {
                 messageFound.update({
-                    likes: messageFound.likes + 1,
+                    likes: + messageFound.likes + 1,
                 })
                 .then(function() {
                     done(messageFound);

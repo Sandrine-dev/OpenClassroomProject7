@@ -2,6 +2,7 @@
 const models = require ('../models');
 const asyncLib = require ('async');
 var jwtUtils = require ('../utils/jwtutils');
+const message = require('./message');
 
 module.exports = {
     createCommentaire: function(req, res) {
@@ -14,39 +15,33 @@ module.exports = {
         var contenue = req.body.commentaire;
 
         if (contenue == null) {
-            return res.status(400).json({ 'error' : 'veuillez ajouter du texte'});
+            return res.status(400).json({ 'error' : 'veuillez ajouter du texte' + err});
         }
-
-        models.User.findOne({
-            attributes: ['id'],
-            where: { id: userId}
-        })
 
         models.Message.findOne({
             attributes: ['id'],
             where: { id: messageId}
         })
-
-        .then(function(user, message) {
-            if(user && message) {
-                var newCommentaire = models.commentaire.create({
-                    commentaire: contenue,
-                    messageId: message.id,
-                    userId: user.id
+        .then(function(messageFound) {
+            if (messageFound) {
+                var newCommentaire = models.Commentaire.create({
+                    commentaire: contenue
                 })
                 .then(function(newCommentaire){
-                    return res.status(201).json({newCommentaire})
-                })
-                .catch(function(err) {
-                    return res.status(500).json({'error': 'Impossible d\'ajouter le commenaitre'})
-                })
-            } else {
-                return res.status(409).json({'error': 'message ou utilisateurs inexistatn'})
+                    return res.status(201).json({newCommentaire});
+                    })
+                    .catch(function(err) {
+                        return res.status(500).json({ 'error': 'Impossible d\'ajouter le commentaire'});
+                    }) 
+            }else {
+                return res.status(409).json({'error': 'Message introuvable'});
             }
         })
-        .catch(function(err) {
-            return res.status(500).json ({ 'error' : ''})
+        .catch(function(err){
+            return res.status(500).json({'error' : 'impossible de vérifier le commentaire'});
         })
+
+
     },
 
     listCommentaire: function(req, res) {
