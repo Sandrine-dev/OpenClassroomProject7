@@ -18,12 +18,12 @@ module.exports = {
             return res.status(400).json({ 'error' : 'veuillez ajouter du texte' + err});
         }
 
-        models.Message.findOne({
+        models.User.findOne({
             attributes: ['id'],
-            where: { id: messageId}
+            where: {id: userId}
         })
-        .then(function(messageFound) {
-            if (messageFound) {
+        .then(function(userFound) {
+            if (userFound) {
                 var newCommentaire = models.Commentaire.create({
                     commentaire: contenue
                 })
@@ -31,14 +31,14 @@ module.exports = {
                     return res.status(201).json({newCommentaire});
                     })
                     .catch(function(err) {
-                        return res.status(500).json({ 'error': 'Impossible d\'ajouter le commentaire'});
+                        return res.status(500).json({ 'error': 'Impossible d\'ajouter le commentaire' + err});
                     }) 
             }else {
-                return res.status(409).json({'error': 'Message introuvable'});
+                return res.status(409).json({'error': 'Message introuvable' + err});
             }
         })
         .catch(function(err){
-            return res.status(500).json({'error' : 'impossible de vérifier le commentaire'});
+            return res.status(500).json({'error' : 'impossible de vérifier le commentaire' + err});
         })
 
 
