@@ -8,18 +8,20 @@ var jwtUtils = require ('../utils/jwtutils');
 module.exports = {
     createMessage: function(req, res) {
 
+        //console.log('coucou');
         //recupérer l'autorisation
         var headerAuth = req.headers['authorization'];
         var userId = jwtUtils.getUserId(headerAuth);
 
         //Paramètres
         var contenue = req.body.message;
-        var imagealt = req.body.image_alt;
-        //var imageurl = req.body.image_url;
-        var imageurl = null;
+        var imageAlt = req.body.image_alt;
+        //var imageUrl = req.body.image_url;
+        var imageUrl = null;
 
         if(req.file !== undefined){
-            imageurl =` ${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+            //console.log(req.file);
+            imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
         }
 
         if (contenue == null) {
@@ -79,8 +81,8 @@ module.exports = {
                 var newMessage = models.Message.create({
                         userId: user.id,
                         message : contenue,
-                        imagealt: imagealt,
-                        imageurl: imageurl,
+                        imageAlt: imageAlt,
+                        imageUrl: imageUrl,
                         likes : 0,
                 })
                 .then(function(newMessage){

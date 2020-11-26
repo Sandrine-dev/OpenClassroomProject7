@@ -13,6 +13,8 @@ module.exports = {
 
         //Paramètres
         var contenue = req.body.commentaire;
+        var messageId = req.params.messageId;
+        //console.log(messageId);
 
         if (contenue == null) {
             return res.status(400).json({ 'error' : 'veuillez ajouter du texte' + err});
@@ -22,23 +24,26 @@ module.exports = {
             attributes: ['id'],
             where: {id: userId}
         })
+
         .then(function(userFound) {
             if (userFound) {
                 var newCommentaire = models.Commentaire.create({
-                    commentaire: contenue
+                    commentaire: contenue,
+                    userId: userFound.id,
+                    messageId: messageId
                 })
                 .then(function(newCommentaire){
-                    return res.status(201).json({newCommentaire});
-                    })
-                    .catch(function(err) {
-                        return res.status(500).json({ 'error': 'Impossible d\'ajouter le commentaire' + err});
-                    }) 
+                    return res.status(201).json({'commentaireId' : newCommentaire.id});
+                })
+                .catch(function(err) {
+                    return res.status(500).json({'error' : 'impossible d\'ajouter le commentaires' + err})
+                })
             }else {
-                return res.status(409).json({'error': 'Message introuvable' + err});
+                return res.status(409).json({'error': 'Utilateur introuvable' });
             }
         })
         .catch(function(err){
-            return res.status(500).json({'error' : 'impossible de vérifier le commentaire' + err});
+            return res.status(500).json({'error' : 'impossible de vérifier l\'utilisateur' + err});
         })
 
 
@@ -50,8 +55,12 @@ module.exports = {
         var offset = parseInt(req.query.offset);
         var order = req.query.order;
 
+        if( limit > 50) {
+            limit = 50;
+        }
+
         models.commentaire.findAll ({
-            order: [(order != null) ? order.split(':') : ['updateAt', 'ASC']],
+            order: [(order != null) ? order.split(':') : ['updateAt', 'DESC']],
             attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
             limit: (!isNaN(limit)) ? limit : null,
             offset: (!isNaN(offset)) ? offset : null,

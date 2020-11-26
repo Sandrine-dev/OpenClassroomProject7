@@ -14,7 +14,7 @@ module.exports = {
         var userId = jwtUtils.getUserId(headerAuth);
 
         //paramètres
-        var messageId = parseInt(req.query.messageId);
+        var messageId = req.params.messageId;
 
         if (messageId <= 0) {
             return res.status(400).json ({ 'error' : 'paramètre invalide'});
@@ -120,7 +120,7 @@ module.exports = {
         var userId = jwtUtils.getUserId(headerAuth);
 
         //paramètres
-        var messageId = parseInt(req.query.messageId);
+        var messageId = req.params.messageId;
 
         if (messageId <= 0) {
             return res.status(400).json ({ 'error' : 'paramètre invalide'});
