@@ -150,7 +150,10 @@ module.exports = {
 
         .then(function(messageFound){
             if(messageFound) {
-                messageFound.destroy()
+                var imageUrl = req.body.image_url.split('/images/')[1];
+                fs.unlink(`images/${imageUrl}`, () => {
+                    messageFound.destroy()
+                })
                 .then (function () {
                     return res.status(201).json({message: 'message supprimé'});
                 })  
