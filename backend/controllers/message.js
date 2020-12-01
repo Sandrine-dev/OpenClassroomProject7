@@ -15,14 +15,13 @@ module.exports = {
 
         //Paramètres
         var contenue = req.body.message;
-        var imageAlt = req.body.image_alt;
-        //var imageUrl = req.body.image_url;
-        var imageUrl = null;
+        var image = null;
 
         if(req.file !== undefined){
-            //console.log(req.file);
-            imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+            console.log(req.file);
+            image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
         }
+        console.log(image);
 
         if (contenue == null) {
             return res.status(400).json({ 'error' : 'veuillez ajouter du texte'});
@@ -77,15 +76,16 @@ module.exports = {
 
         .then(function(user) {
             if(user) {
-
+                console.log(image);
+                console.log('je veux savoir ou tu es');
                 var newMessage = models.Message.create({
                         userId: user.id,
                         message : contenue,
-                        imageAlt: imageAlt,
-                        imageUrl: imageUrl,
+                        image_url: image,
                         likes : 0,
                 })
                 .then(function(newMessage){
+                    console.log(newMessage);
                     return res.status(201).json({'messageId' : newMessage.id});
                 })
                 .catch(function(err) {

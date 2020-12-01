@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
       });
       Message.hasMany(models.Commentaire, {
-        foreignKey: 'message.id'
+        foreignKey: 'messageId'
       });
     };
     /*classMethods: {

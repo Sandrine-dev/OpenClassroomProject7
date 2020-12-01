@@ -58,9 +58,9 @@ module.exports = {
         if( limit > 50) {
             limit = 50;
         }
-
-        models.commentaire.findAll ({
-            order: [(order != null) ? order.split(':') : ['updateAt', 'DESC']],
+        
+        models.Commentaire.findAll ({
+            order: [(order != null) ? order.split(':') : ['createdAt', 'DESC']],
             attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
             limit: (!isNaN(limit)) ? limit : null,
             offset: (!isNaN(offset)) ? offset : null,
@@ -78,7 +78,7 @@ module.exports = {
         })
         .catch (function(err) {
             console.log(err);
-            res.status(500).json({'error': 'champ incomplet'});
+            res.status(500).json({'error': 'champ incomplet' +err });
         })
 
     }

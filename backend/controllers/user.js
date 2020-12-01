@@ -207,8 +207,13 @@ module.exports = {
     
         // Params
         var poste = req.body.poste;
-        var photoUrl = req.body.photo_url;
-        var photoAlt = req.body.photo_alt;
+        var image = null;
+
+        if(req.file !== undefined){
+            console.log(req.file);
+            image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        }
+        console.log(image);
 
         /* asyncLib.waterfall ([
 
@@ -252,15 +257,14 @@ module.exports = {
     
         
         models.User.findOne({
-            attributes: ['id', 'poste', 'photo_url', 'photo_alt'],
+            attributes: ['id', 'poste', 'photo_url'],
             where: { id: userId }
         })
         .then(function (user) {
             if (user) {
                 user.update ({
-                    poste: (poste ? poste : userFound.poste),
-                    photoAlt: (photoAlt ? photoAlt : userFound.photoAlt),
-                    photoUrl: (photoUrl ? photoUrl : userFound.photoUrl)
+                    poste: (poste ? poste : user.poste),
+                    photo_url: (image ? image : user.photoUrl)
                 })
                 .then(function (user) {
                     return res.status(201).json({ user })
@@ -273,7 +277,7 @@ module.exports = {
             }
         })
         .catch(function(err) {
-            return res.status(500).json({'error' : 'Impossible de vérifier l\'utilisateur'});
+            return res.status(500).json({'error' : 'Impossible de vérifier l\'utilisateur' + err});
         });
     },
 
