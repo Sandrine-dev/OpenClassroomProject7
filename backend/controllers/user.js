@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const jwtUtils = require('../utils/jwtutils');
 const models = require ('../models');
+const fs = require ('fs');
 
 //const utile
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -211,7 +212,7 @@ module.exports = {
 
         if(req.file !== undefined){
             console.log(req.file);
-            image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+            image = `images/${req.file.filename}`;
         }
         console.log(image);
 
@@ -257,14 +258,14 @@ module.exports = {
     
         
         models.User.findOne({
-            attributes: ['id', 'poste', 'photo_url'],
+            attributes: ['id'],
             where: { id: userId }
         })
         .then(function (user) {
             if (user) {
                 user.update ({
                     poste: (poste ? poste : user.poste),
-                    photo_url: (image ? image : user.photoUrl)
+                    photo_url: (image ? image : user.image)
                 })
                 .then(function (user) {
                     return res.status(201).json({ user })
@@ -299,10 +300,11 @@ module.exports = {
             if (userFound) {
                 bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
                     if (resBycrypt) {
-                        userFound.destroy()
-                        .then (function () {
-                            return res.status(201).json({message: 'utilisateurs supprimé'});
+                        var imageUrl = userFound.photo_url;
+                        fs.unlink(`${imageUrl}`, () => {
+                            userFound.destroy()
                         })
+                        return res.status(201).json({message: 'utilisateur supprimé'});
                     }else {
                         return res.status(403).json({ 'error' : 'mot de passe invalide'});
                     }

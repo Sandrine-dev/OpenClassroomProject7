@@ -19,7 +19,7 @@ module.exports = {
 
         if(req.file !== undefined){
             console.log(req.file);
-            image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+            image = `images/${req.file.filename}`;
         }
         console.log(image);
 
@@ -76,8 +76,7 @@ module.exports = {
 
         .then(function(user) {
             if(user) {
-                console.log(image);
-                console.log('je veux savoir ou tu es');
+                //console.log(image);
                 var newMessage = models.Message.create({
                         userId: user.id,
                         message : contenue,
@@ -143,22 +142,21 @@ module.exports = {
         var messageId = req.body.id;
         
         models.Message.findOne({
-            attributes: ['id'],
             where: {id: messageId}
         })
 
 
         .then(function(messageFound){
             if(messageFound) {
-                var imageUrl = req.body.image_url.split('/images/')[1];
-                fs.unlink(`images/${imageUrl}`, () => {
+                //console.log(messageFound);
+                var imageUrl = messageFound.image_url;
+                //console.log(`images/${imageUrl}`);
+                fs.unlink(`${imageUrl}`, () => {
                     messageFound.destroy()
                 })
-                .then (function () {
-                    return res.status(201).json({message: 'message supprimé'});
-                })  
+                return res.status(201).json({message: 'message supprimé'});
             }else {
-                return res.status(403).json({ 'error' : 'ce message n\'est pas dans notre base de donné' + err});
+                return res.status(403).json({ 'error' : 'ce message n\'est pas dans notre base de donné'});
             }
         })
         .catch(function(err) {
