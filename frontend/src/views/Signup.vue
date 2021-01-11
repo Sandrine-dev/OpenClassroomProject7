@@ -13,23 +13,23 @@
                     <form action="">
                         <div class="form-group">
                             <label for="nom" class="input-label">Nom</label>
-                            <input type="nom" class="form-control" placeholder="Nom">
+                            <input type="nom" class="form-control" placeholder="Nom" v-model="nom">
                         </div>
                         <div class="form-group">
                             <label for="prenom" class="input-label">Prénom</label>
-                            <input type="prenom" class="form-control" placeholder="Prénom">
+                            <input type="prenom" class="form-control" placeholder="Prénom" v-model="prenom">
                         </div>
                         <div class="form-group">
                             <label for="email" class="input-label">Email</label>
-                            <input type="email" class="form-control" placeholder="Email">
+                            <input type="email" class="form-control" placeholder="Email" v-model="email">
                         </div>
                         <div class="form-group">
                             <label for="password" class="input-label">Password</label>
-                            <input type="password" class="form-control" placeholder="Password">
+                            <input type="password" class="form-control" placeholder="Password" v-model="password">
                         </div>
                         <div class="form-group d-flex justify-content-center">
-                            <button class="btn btn-primary w-25" @click="login" v-if="!isLoggingIn">S'enregistrer</button>
-                            <button class="btn btn-primary w-25" disabled v-if="isLoggingIn"><loading-component width="30"></loading-component></button>
+                            <button class="btn btn-primary w-25" @click="signUp" v-if="!isSignIn">S'enregistrer</button>
+                            <button class="btn btn-primary w-25" disabled v-if="isSignIn"><loading-component width="30"></loading-component></button>
 
                         </div>
                     </form>
@@ -42,30 +42,49 @@
 
 <script>
     import LoadingComponent from '../components/Loading'
+    import AuthService from '../AuthService'
 
     export default {
         components : { LoadingComponent },
         data() {
             return {
-                isLoggingIn: false,
-                isAlertShow: false
+                isSignIn: false,
+                isAlertShow: false,
+                nom: '',
+                prenom: '',
+                email: '',
+                password: ''
             }
         },
 
         methods: {
-            login() {
-                this.isLoggingIn =true
+            async signUp() {
+                this.isSignIn =true
 
-                setTimeout(() => {
-                    this.isLoggingIn = false
-                    this.isAlertShow = true
-                    setTimeout(() =>
-                        this.redirect(), 1000)
-                }, 1000)
-            },
+                try {
+                    const credentials = {
+                        nom: this.nom,
+                        prenom: this.prenom,
+                        email: this.email,
+                        password: this.password
+                    };
+                    const response = await AuthService.signUp(credentials);
+                    this.msg = response.msg;
+                    } catch (error) {
+                        this.msg = error
+                        console.log(error);
+                    }
+
+                    setTimeout(() => {
+                        this.isSignIn = false
+                        this.isAlertShow = true
+                        setTimeout(() =>
+                            this.redirect(), 1000)
+                    }, 1000)
+                },
              
             redirect() {
-                this.$router.push({ name: 'home'})
+                this.$router.push({ name: 'Home'})
             }
 
         }

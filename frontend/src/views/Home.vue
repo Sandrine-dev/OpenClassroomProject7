@@ -17,4 +17,7 @@ export default {
     HelloWorld
   }
 }
+
+import AuthService from '@/services/AuthService.js';
+
 </script>

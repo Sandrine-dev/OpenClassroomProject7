@@ -40,24 +40,44 @@
         data() {
             return {
                 isLoggingIn: false,
-                isAlertShow: false
+                isAlertShow: false,
+                email: '',
+                password: '',
             }
         },
 
         methods: {
-            login() {
+            async login() {
                 this.isLoggingIn =true
 
-                setTimeout(() => {
-                    this.isLoggingIn = false
-                    this.isAlertShow = true
-                    setTimeout(() =>
-                        this.redirect(), 1000)
-                }, 1000)
-            },
+                try {
+
+                    const credentials = {
+                    email: this.email,
+                    password: this.password
+                    };
+
+                    const response = await AuthService.login(credentials);
+                    this.msg = response.msg;
+                    const token = response.token;
+                    const user = response.user;
+                    this.$store.dispatch('login', { token, user });
+                    
+                    } catch (error) {
+                        this.msg = error;
+                        console.log(error)
+                    }
+                
+                    setTimeout(() => {
+                        this.isLoggingIn = false
+                        this.isAlertShow = true
+                        setTimeout(() =>
+                            this.redirect(), 1000)
+                    }, 1000)
+                },
              
             redirect() {
-                this.$router.push({ name: 'home'})
+                this.$router.push({ name: 'Home'})
             }
 
         }
