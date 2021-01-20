@@ -12,13 +12,14 @@
                     <br>
                     <form action="">
                         <div class="form-group">
-                            <label for="email" class="input-label">Email</label>
-                            <input type="email" class="form-control" placeholder="Email">
+                            <label for="email" class="input-label" required>Email</label>
+                            <input type="email" class="form-control" placeholder="Email" v-model="email">
                         </div>
                         <div class="form-group">
-                            <label for="password" class="input-label">Password</label>
-                            <input type="password" class="form-control" placeholder="Password">
+                            <label for="password" class="input-label" required>Password</label>
+                            <input type="password" class="form-control" placeholder="Password" v-model="password">
                         </div>
+                        <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
                         <div class="form-group d-flex justify-content-center">
                             <button class="btn btn-primary w-25" @click="login" v-if="!isLoggingIn">Se connecter</button>
                             <button class="btn btn-primary w-25" disabled v-if="isLoggingIn"><loading-component width="30"></loading-component></button>
@@ -34,7 +35,7 @@
 
 <script>
     import LoadingComponent from '../components/Loading'
-
+    import AuthService from '@/AuthService.js'
     export default {
         components : { LoadingComponent },
         data() {
@@ -43,6 +44,7 @@
                 isAlertShow: false,
                 email: '',
                 password: '',
+                msg: ''
             }
         },
 
@@ -59,25 +61,29 @@
 
                     const response = await AuthService.login(credentials);
                     this.msg = response.msg;
+
                     const token = response.token;
                     const user = response.user;
+
                     this.$store.dispatch('login', { token, user });
-                    
-                    } catch (error) {
-                        this.msg = error;
-                        console.log(error)
-                    }
-                
                     setTimeout(() => {
                         this.isLoggingIn = false
                         this.isAlertShow = true
                         setTimeout(() =>
                             this.redirect(), 1000)
                     }, 1000)
+                    
+                    } catch (error) {
+                        this.isLoggingIn = false
+                        this.msg = error.response.data.msg;
+                        console.log(error);
+                    }
+                
+                    
                 },
              
             redirect() {
-                this.$router.push({ name: 'Home'})
+                this.$router.push({ name: '/'})
             }
 
         }

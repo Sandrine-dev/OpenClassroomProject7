@@ -12,21 +12,22 @@
                     <br>
                     <form action="">
                         <div class="form-group">
-                            <label for="nom" class="input-label">Nom</label>
+                            <label for="nom" class="input-label" minlenght="3" maxlenght= "20" required>Nom</label>
                             <input type="nom" class="form-control" placeholder="Nom" v-model="nom">
                         </div>
                         <div class="form-group">
-                            <label for="prenom" class="input-label">Prénom</label>
+                            <label for="prenom" class="input-label" minlenght="3" maxlenght= "25" required>Prénom</label>
                             <input type="prenom" class="form-control" placeholder="Prénom" v-model="prenom">
                         </div>
                         <div class="form-group">
-                            <label for="email" class="input-label">Email</label>
+                            <label for="email" class="input-label" pattern= '/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/' required >Email</label>
                             <input type="email" class="form-control" placeholder="Email" v-model="email">
                         </div>
                         <div class="form-group">
-                            <label for="password" class="input-label">Password</label>
+                            <label for="password" class="input-label" pattern='/^(?=.*\d).{4,8}$/' required>Password</label>
                             <input type="password" class="form-control" placeholder="Password" v-model="password">
                         </div>
+                        <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
                         <div class="form-group d-flex justify-content-center">
                             <button class="btn btn-primary w-25" @click="signUp" v-if="!isSignIn">S'enregistrer</button>
                             <button class="btn btn-primary w-25" disabled v-if="isSignIn"><loading-component width="30"></loading-component></button>
@@ -42,7 +43,7 @@
 
 <script>
     import LoadingComponent from '../components/Loading'
-    import AuthService from '../AuthService'
+    import AuthService from '@/AuthService.js'
 
     export default {
         components : { LoadingComponent },
@@ -53,13 +54,14 @@
                 nom: '',
                 prenom: '',
                 email: '',
-                password: ''
+                password: '',
+                msg: ''
             }
         },
 
         methods: {
             async signUp() {
-                this.isSignIn =true
+                this.isSignIn = true
 
                 try {
                     const credentials = {
@@ -70,21 +72,24 @@
                     };
                     const response = await AuthService.signUp(credentials);
                     this.msg = response.msg;
-                    } catch (error) {
-                        this.msg = error
-                        console.log(error);
-                    }
-
                     setTimeout(() => {
                         this.isSignIn = false
                         this.isAlertShow = true
                         setTimeout(() =>
                             this.redirect(), 1000)
                     }, 1000)
+
+                    } catch (error) {
+                        this.isSignIn = false
+                        this.msg = error.response.data.msg;
+                        console.log(error);
+                    }
+
+                    
                 },
              
             redirect() {
-                this.$router.push({ name: 'Home'})
+                this.$router.push({ name: '/'})
             }
 
         }

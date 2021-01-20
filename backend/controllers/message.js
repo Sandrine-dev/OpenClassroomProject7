@@ -88,14 +88,14 @@ module.exports = {
                     return res.status(201).json({'messageId' : newMessage.id});
                 })
                 .catch(function(err) {
-                    return res.status(500).json({'error': 'Impossible d\'ajouter le message' + err});
+                    return res.status(500).json({message: 'Impossible d\'ajouter le message' + err});
                 })
             } else {
-                return res.status(409).json({'error': 'utilisateur inconnue'});
+                return res.status(409).json({message: 'utilisateur inconnue'});
             }
         })
         .catch(function(err) {
-            return res.status(500).json ({ 'error' :'Impossible de vérifier l\'utilisateur' + err });
+            return res.status(500).json ({ message :'Impossible de vérifier l\'utilisateur' + err });
         })
     },
 
@@ -124,11 +124,11 @@ module.exports = {
             if (messages) {
                 res.status(200).json(messages);
             } else {
-                res.status(404).json ({ 'error' : 'aucun messages trouvé'});
+                res.status(404).json ({ message : 'aucun messages trouvé'});
             }
         })
         .catch (function(err) {
-            res.status(500).json({'error': 'champ incomplet' + err});
+            res.status(500).json({message: 'champ incomplet' + err});
         });
     },
 
@@ -156,11 +156,11 @@ module.exports = {
                 })
                 return res.status(201).json({message: 'message supprimé'});
             }else {
-                return res.status(403).json({ 'error' : 'ce message n\'est pas dans notre base de donné'});
+                return res.status(403).json({ message : 'ce message n\'est pas dans notre base de donné'});
             }
         })
         .catch(function(err) {
-            return res.status(500).json ({ 'error': 'impossible de vérifier l\'utilisateur' + err})
+            return res.status(500).json ({ message : 'impossible de vérifier l\'utilisateur' + err})
         });
 
     }

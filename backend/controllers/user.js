@@ -25,23 +25,23 @@ module.exports = {
         //Verification que tous est bien tapé correctement par l'utilisateur
 
         if (email == null || nom == null || password == null || prenom == null) {
-            return res.status(400).json({ 'error' : 'Paramètres manquant'});
+            return res.status(400).json({ msg : 'Paramètres manquant'});
         }
 
-        if (nom.length >= 20 || nom.length <= 4) {
-            return res.status(400).json({ 'error' : 'le nom doit avoir un nombre de caractère entre 4 et 20.'});
+        if (nom.length >= 20 || nom.length <= 3) {
+            return res.status(400).json({ msg : 'Votre nom doit contenir entre 4 et 20 caractères'});
         }
 
-        if (prenom.length >=25 || prenom.length <=4) {
-            return res.status(400).json({ 'error' : 'le prenom doit avoir un nombre de caractère entre 4 et 20.'});
+        if (prenom.length >=25 || prenom.length <=3) {
+            return res.status(400).json({ msg : 'Votre prénom doit contenir entre 4 et 25 caractère'});
         }
 
         if (!EMAIL_REGEX.test(email)){
-            return res.status(400).json({ 'error' : 'email invalide!'});
+            return res.status(400).json({ msg : 'Votre email est invalide, il ne doit pas contenir de caractère sépciaux'});
         }
 
-        if (!PASSWORD_REGEX.test(password)){
-            return res.status(400).json({ 'error' : 'le mot de passe est invalide, il doit avoir 4 à 8 caractère et inclure un nombre.'});
+        if (!PASSWORD_REGEX.test(password) || password.length <= 5){
+            return res.status(400).json({ msg : 'Votre mot de passe est invalide, il doit avoir un minimum de 6 caractère et inclure un nombre.'});
         }
 
 
@@ -66,16 +66,16 @@ module.exports = {
                         return res.status(201).json({ 'userId' : newUser.id})
                     })
                     .catch(function(err) {
-                        return res.status(500).json({ 'error' : 'Impposble d\'ajouter l\'utilisateur'})
+                        return res.status(500).json({ msg : 'Impposble d\'ajouter l\'utilisateur'})
                     })
                 });
             } else { 
-                return res.status(409).json({'error' : 'utilisateur déjà existant'});
+                return res.status(409).json({ msg : 'utilisateur déjà existant'});
                 }
 
         })
         .catch(function(err){
-            return res.status(500).json ({ 'error' : 'impossible de vérifier l\'utilisateurs' + err});
+            return res.status(500).json ({ msg : 'impossible de vérifier l\'utilisateurs' + err});
         });
     },
         
@@ -90,7 +90,7 @@ module.exports = {
 
         //verrification des paramètres donné
         if (email == null || password == null) {
-            return res.status(400).json({ 'error' : 'Paramètres manquant'})
+            return res.status(400).json({ msg : 'Paramètres manquant'})
         }
 
         /*
@@ -159,16 +159,16 @@ module.exports = {
                             'token' : jwtUtils.generateTokenForUser(userFound)
                         });
                     }else {
-                        return res.status(403).json({ 'error' : 'mot de passe invalide'});
+                        return res.status(403).json({ msg : 'mot de passe invalide'});
                     }
                 })
 
             } else {
-                    return res.status(404).json ({'error' : 'L\'Utilisateur n\'est pas dans notre base de données'});
+                    return res.status(404).json ({ msg : 'L\'Utilisateur n\'est pas dans notre base de données'});
                 }
             })
             .catch(function(err) {
-                return res.status(500).json ({ 'error': 'impossible de vérifier l\'utilisateur'})
+                return res.status(500).json ({ msg : 'impossible de vérifier l\'utilisateur'})
             });
             
     },
@@ -181,7 +181,7 @@ module.exports = {
         var userId = jwtUtils.getUserId(headerAuth);
 
         if (userId < 0)
-            return res.status(400).json({ 'error': 'mauvais token'});
+            return res.status(400).json({ msg : 'Session expiré '});
         
         models.User.findOne({
             attributes: ['id', 'email', 'nom','prenom', 'poste', 'photo_alt', 'photo_url'],
@@ -192,11 +192,11 @@ module.exports = {
             if (user) {
                 res.status(201).json(user);
             } else {
-                res.status(404).json({'error' : 'Utilisateur introuvable!'})
+                res.status(404).json({ msg : 'Utilisateur introuvable!'})
             }
         })
         .catch(function(err) {
-            res.status(500).json({ 'error' : 'Impossible d\'aller chercher l\'utilisateur'})
+            res.status(500).json({ msg : 'Impossible d\'aller chercher l\'utilisateur'})
         });
     },
     
@@ -271,14 +271,14 @@ module.exports = {
                     return res.status(201).json({ user })
                 })
                 .catch(function(err) {
-                    return res.status(500).json ({ 'error' : 'Impossible d\'apporter les modifications'});
+                    return res.status(500).json ({ msg : 'Impossible d\'apporter les modifications'});
                 })
             } else {
-                return res.status(409).json ({ 'error' : 'Utilisateur non trouvé'});
+                return res.status(409).json ({ msg : 'Utilisateur non trouvé'});
             }
         })
         .catch(function(err) {
-            return res.status(500).json({'error' : 'Impossible de vérifier l\'utilisateur' + err});
+            return res.status(500).json({ msg : 'Impossible de vérifier l\'utilisateur' + err});
         });
     },
 
@@ -304,18 +304,18 @@ module.exports = {
                         fs.unlink(`${imageUrl}`, () => {
                             userFound.destroy()
                         })
-                        return res.status(201).json({message: 'utilisateur supprimé'});
+                        return res.status(201).json({ msg : 'utilisateur supprimé'});
                     }else {
-                        return res.status(403).json({ 'error' : 'mot de passe invalide'});
+                        return res.status(403).json({ msg : 'mot de passe invalide'});
                     }
                 })
 
             } else {
-                    return res.status(404).json ({'error' : 'L\'Utilisateur n\'est pas dans notre base de données'});
+                    return res.status(404).json ({ msg : 'L\'Utilisateur n\'est pas dans notre base de données'});
                 }
         })
         .catch(function(err) {
-            return res.status(500).json ({ 'error': 'impossible de vérifier l\'utilisateur'})
+            return res.status(500).json ({ msg : 'impossible de vérifier l\'utilisateur'})
         });
     }
 }

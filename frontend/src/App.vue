@@ -1,18 +1,32 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Acceuil</router-link>
-      <router-link to="/about">À propos de nous</router-link>
+    <headerPage></headerPage>
     </div>
+    
+    <div class="container">
     <router-view/>
-
-
+    </div>
 
   </div>
   
 </template>
 
+<script>
+import HeaderPage from '@/components/HeaderPage.vue';
 
+
+
+
+
+export default {
+  name: 'Home',
+
+  components: {
+    headerPage: HeaderPage,
+    },
+}
+</script>
 
 <style lang="scss">
 #app {
@@ -28,7 +42,7 @@
 
   a {
     font-weight: bold;
-    color: #152544;
+    color: white;//#152544;
 
     &.router-link-exact-active {
       color: #cd515a;
