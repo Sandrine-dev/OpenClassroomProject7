@@ -17,15 +17,27 @@ import HeaderPage from '@/components/HeaderPage.vue';
 
 
 
-
-
 export default {
   name: 'Home',
 
   components: {
     headerPage: HeaderPage,
     },
+
+    computed: {
+        isLoggedIn: function() {
+          return this.$store.getters.isLoggedIn;
+        }
+      },
+      methods: {
+        logout: function() {
+          this.$store.dispatch("logout").then(() => {
+            this.$router.push("login");
+          });
+        }
+      }
 }
+
 </script>
 
 <style lang="scss">
@@ -39,6 +51,12 @@ export default {
 
 #nav {
   padding: 30px;
+
+  .logout{
+    font-weight: bold;
+    color: white;//#152544;
+
+  }
 
   a {
     font-weight: bold;
