@@ -1,7 +1,4 @@
 <template>
-  
-
-
   <div class="about">
 
     <section class="container newMessage">

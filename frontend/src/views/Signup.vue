@@ -1,5 +1,5 @@
 <template>
-    <section class="container-fluid">
+    <section class="container">
         <div class= "row justify-content-center">
             <div class= "col-lg-4">
                 <div class= "login-panel bg-white text-left">
@@ -7,7 +7,7 @@
                         Votre profile a été créé ! <small> Vous allez être redirigé</small>
                         <loading-component width="30"></loading-component>
                     </div>
-                    <h1 class="display-3 font-weight-bold">Signup</h1>
+                    <h1 class="display-3 font-weight-bold">Sign Up</h1>
                     <p class="font-weight-bold">Bienvenue</p>
                     <br>
                     <form action="">
@@ -29,7 +29,7 @@
                         </div>
                         <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
                         <div class="form-group d-flex justify-content-center">
-                            <button class="btn btn-primary w-25" @click="signUp" v-if="!isSignIn">S'enregistrer</button>
+                            <button class="btn btn-primary w-25" @click="signUp" v-if="!isSignIn">Sign Up</button>
                             <button class="btn btn-primary w-25" disabled v-if="isSignIn"><loading-component width="30"></loading-component></button>
 
                         </div>

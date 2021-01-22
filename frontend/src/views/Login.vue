@@ -1,5 +1,5 @@
 <template>
-    <section class="container-fluid">
+    <section class="container">
         <div class= "row justify-content-center">
             <div class= "col-lg-4">
                 <div class= "login-panel bg-white text-left">
@@ -21,7 +21,7 @@
                         </div>
                         <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
                         <div class="form-group d-flex justify-content-center">
-                            <button class="btn btn-primary w-25" @click="login" v-if="!isLoggingIn">Se connecter</button>
+                            <button class="btn btn-primary w-25" @click="login" v-if="!isLoggingIn">Login</button>
                             <button class="btn btn-primary w-25" disabled v-if="isLoggingIn"><loading-component width="30"></loading-component></button>
 
                         </div>
