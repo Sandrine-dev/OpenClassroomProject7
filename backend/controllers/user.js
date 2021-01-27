@@ -317,5 +317,33 @@ module.exports = {
         .catch(function(err) {
             return res.status(500).json ({ msg : 'impossible de vérifier l\'utilisateur'})
         });
-    }
+    },
+
+    getUserInfos: function (req, res) {
+        
+         //recupérer l'autorisation
+         var headerAuth = req.headers['authorization'];
+         var userId = jwtUtils.getUserId(headerAuth);
+ 
+         if (userId < 0)
+             return res.status(400).json({ msg : 'Session expiré '});
+         
+         models.User.findOne({
+             attributes: ['id', 'email', 'nom','prenom', 'poste', 'photo_alt', 'photo_url'],
+             where: { id: userId }
+ 
+         })
+         .then(function(user) {
+             if (user) {
+                 res.status(201).json(user);
+             } else {
+                 res.status(404).json({ msg : 'Utilisateur introuvable!'})
+             }
+         })
+         .catch(function(err) {
+             res.status(500).json({ msg : 'Impossible d\'aller chercher l\'utilisateur'})
+         });
+
+    },
+
 }

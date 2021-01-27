@@ -5,6 +5,7 @@ const userRoutes = require('./routes/user');
 const messageRoutes = require ('./routes/message');
 const likeRoutes = require ('./routes/like');
 const commentRoutes = require ('./routes/commentaire')
+const path = require('path');
 
 //Instantiate server
 const app = express();
@@ -20,10 +21,14 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 //Api routes
 app.use('/api', userRoutes);
 app.use('/api', messageRoutes);
 app.use('/api', likeRoutes);
 app.use('/api', commentRoutes);
+
+
 
 module.exports = app;

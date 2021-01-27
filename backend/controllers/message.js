@@ -21,7 +21,7 @@ module.exports = {
 
         if(req.file !== undefined){
             console.log(req.file);
-            image = `images/${req.file.filename}`; //`${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+            image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
         }
         console.log(image);
 

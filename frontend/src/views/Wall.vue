@@ -76,7 +76,8 @@ export default {
     allPost: function() {
       Axios
       .get ('http://localhost:3000/api/messages')
-      .then ((response) => this.response = response.data )
+      .then ((response) => {this.response = response.data;
+      console.log(response.data);})
       .catch ( error=> console.log(error))
     }
 

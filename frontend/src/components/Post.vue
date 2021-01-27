@@ -1,31 +1,30 @@
 <template>
   <div class="messageSee">
     <div class="allMessage card">
-        <div class="user">
-          <h2>{{username}}</h2>
+        <div class="user" >
+          <h2>{{nom}}</h2>
         </div>
         <div class="content">
             <p>{{message}}</p>
-            <img v-bind:src= "fileToDisplay" class="imagePost">
+            <img v-bind:src= "fileToDisplay" class="filePost">
         </div>
      
 
-        <div class="react-news"> 
-        <!--<input type="text" class="comment" placeholder="Ecrire un commentaire..." @click="comment" />-->
-        <!-- Like -->
-        </div>
 
+        <div class="react-news">
+
+        </div>
     </div>
   </div>
 </template>
 
 <script>
-  //import axios from "axios";
-
+  import Axios from "axios";
+  
   export default {
     data () {
       return {
-        username: '',
+        nom: '',
       }
     },
 
@@ -36,7 +35,26 @@
       messageId:Number,
     },
 
-}
+    
+    mounted() {
+    this.findId();
+    },
+
+    methods: {
+      findId: async function () {
+        await Axios
+          .get("http://localhost:3000/api/user/" + this.userId)
+          .then((response) => {
+            this.nom = response.data.user.nom;
+            return this.nom;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
+    },
+
+  }
 </script>
 
 <style lang="scss">
@@ -45,4 +63,8 @@
     margin-top: 15px
   }
 
+  .filePost{
+    width: 200px;
+    height: 200px;
+  }
 </style>
