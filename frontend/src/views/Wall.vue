@@ -15,8 +15,7 @@
               <input class="form-control form-control-sm" type="file" id="file" ref="fileInput" v-on:change="onFileUpload">
             </div>
             <div class="d-flex panel-footer form-group">
-              <button class="btn btn-primary w-25" @click="createMessage(message, image)" type="submit" value="Publier">Publier</button>
-
+              <button class="btn btn-primary w-35" @click="createMessage(message, image)" type="submit" value="Publier">Publier</button>
 
             </div>
         </form>

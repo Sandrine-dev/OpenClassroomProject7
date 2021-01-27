@@ -83,7 +83,7 @@
                 },
              
             redirect() {
-                this.$router.push({ name: '/wall'})
+                this.$router.push({ name: 'Wall'})
             }
 
         }

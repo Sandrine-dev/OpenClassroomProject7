@@ -1,29 +1,5 @@
 <template>
-    <div class="container newMessage">
-      <div class="card">
-        <div class="card-body">
-           <div class="alert alert-primary" role="alert" :style="{opacity: isAlertShow ? 1 : 0}">
-              Votre message à bien été publiez<loading-component width="30"></loading-component>
-            </div>
-          <form action="" class="panel panel-default">
-              <div class="d-flex align-items-start flex-column form-group">
-                <label for="text" class="panel-heading form-label">Nouveau message</label>
-                <textarea type="message" class="panel-body container-fluid form-contro" placeholder="nouveau message" rows="3" v-model="message" v-on:input="message = $event.target.value"></textarea>
-              </div>
-              <div class="mb-3 align-items-start">
-                <label for="formFileSm" class="form-label d-flex align-items-start">Ajoutez une image</label>
-                <input class="form-control form-control-sm" type="file" id="file" ref="fileInput" v-on:change="onFileUpload">
-              </div>
-              <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
-              <div class="d-flex panel-footer form-group">
-                <button class="btn btn-primary w-25" @click="createMessage(message, image)" v-if="!isPublished">Publier</button>
-                <button class="btn btn-primary w-25" disable v-if="isPublished"><loading-component  width="30"></loading-component></button>
-
-              </div>
-          </form>
-        </div>
-      </div>
-  </div>
+  
 </template>
 
 <script>

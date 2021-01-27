@@ -17,7 +17,7 @@
                     <router-link to="/wall" class="nav-link">Acceuil</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/about" class="nav-link">Votre Profil</router-link>
+                    <router-link to="/profil" class="nav-link">Votre Profil</router-link>
                   </li>
                   <li @click="logout" class="nav-item">
                     <p class="nav-link logout">Déconnexion</p>
