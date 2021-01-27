@@ -1,8 +1,10 @@
 <template>
   <div id="app">
+
     <div id="nav">
       <headerPage></headerPage>
     </div>
+
     
     <div id="page">
       <router-view/>

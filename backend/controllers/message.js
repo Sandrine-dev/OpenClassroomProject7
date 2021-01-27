@@ -17,6 +17,8 @@ module.exports = {
         var contenue = req.body.message;
         var image = null;
 
+        console.log(req);
+
         if(req.file !== undefined){
             console.log(req.file);
             image = `images/${req.file.filename}`;

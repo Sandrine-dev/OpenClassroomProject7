@@ -89,7 +89,7 @@
                 },
              
             redirect() {
-                this.$router.push({ name: '/'})
+                this.$router.push({ name: '/login'})
             }
 
         }

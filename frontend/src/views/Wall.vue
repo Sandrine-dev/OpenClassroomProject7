@@ -1,26 +1,15 @@
 <template>
+  <div class="about">
 
-  <div class="Wall">
+    <section class="PostMessage">
+      <NewMessage></NewMessage>
+    </section>
 
-    <section class="container">
-      <div class="card">
-        <div class="card-body">
-          <form action="" class="panel panel-default">
-              <div class="d-flex align-items-start flex-column form-group">
-                <label for="text" class="panel-heading form-label">Nouveau message</label>
-                <textarea type="message" class="panel-body container-fluid form-contro" placeholder="nouveau message" rows="3"></textarea>
-              </div>
-              <div class="mb-3 align-items-start">
-                <label for="formFileMultiple" class="form-label d-flex align-items-start">Ajoutez une image</label>
-                <input class="form-control" type="file" id="formFileMultiple" multiple>
-              </div>
-              <div class="d-flex panel-footer form-group">
-                <button class="btn btn-primary w-25">Publier</button>
-                <button class="btn btn-primary w-25"><loading-component width="30"></loading-component></button>
+    <section class="Actu">
+      <h2 class="titre">Actualités de vos collègues</h2>
 
-              </div>
-          </form>
-        </div>
+      <div class="container wallMessage">
+        <Post></Post>
       </div>
     </section>
   </div>
@@ -28,22 +17,24 @@
 
 <script>
 
-
+import Post from '@/components/Post';
+import NewMessage from '@/components/NewMessage';
 
 
 export default {
-  
-}
+
+  components : {Post , NewMessage },
+
+  }
+
 </script>
 
 <style lang="scss">
-  .card {
-    border: #152544 solid 2px;
-   }
 
-  .btn-primary {
-        background: #152544;
-        border: none;
+  .titre{
+    text-decoration: underline;
+    font-weight: bold;
+    color: #cd515a;
   }
 
 </style>

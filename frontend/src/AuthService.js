@@ -52,9 +52,9 @@ export default {
   },
 
   //Wall
-  listMessages() {
+  listMessages(get) {
     return axios
-      .get(url + 'messages/')
+      .get(url + 'messages/', get)
       .then(response => response.data);
   },
 

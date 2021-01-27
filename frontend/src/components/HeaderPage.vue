@@ -14,7 +14,7 @@
 
                 <div v-if="isLoggedIn">
                   <li class="nav-item">
-                    <router-link to="/" class="nav-link">Acceuil</router-link>
+                    <router-link to="/wall" class="nav-link">Acceuil</router-link>
                   </li>
                   <li class="nav-item">
                     <router-link to="/about" class="nav-link">Votre Profil</router-link>

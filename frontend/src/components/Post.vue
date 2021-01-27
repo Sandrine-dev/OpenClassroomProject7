@@ -1,51 +1,53 @@
 <template>
-  <div>
-    <div class="user">
+  <div class="messageSee">
+    <div class="allMessage">
 
-    <h2 class="name">{{ nom }} {{prenom}}</h2>
-    </div>
-    <p>{{ message }}</p>
+      <div v-for="message in message" class="message card" :key="message.id">
+        <div>
+          <h2>{{message.userId}}</h2>
+          <div class="content">
+            <p>{{ message.message }}</p>
+            {{ message.image_url }}
+          </div>
+        </div>
 
+        <div class="react-news"> 
+        <!--<input type="text" class="comment" placeholder="Ecrire un commentaire..." @click="comment" />-->
+        <!-- Like -->
+      </div>
+
+      </div>
     
 
-    <div class="react-news"> 
-      <!--<input type="text" class="comment" placeholder="Ecrire un commentaire..." @click="comment" />-->
-      <!-- Like -->
+      
     </div>
+
   </div>
 </template>
 
 <script>
-import AuthService from '@/AuthService.js';
+  import axios from "axios";
 
-export default {
-
+  export default {
     data () {
-        return {
-            nom: "",
-            prenom: "",
-            message: "",
-        }
+      return {
+        message: '',
+      }
     },
 
-    methods: {
-        async listMessage(){
-
-        try {
-
-
-            const response = await AuthService.listMessage();
-            this.nom = response.nom;
-            this.prenom = response.prenom;
-            } 
-            catch (error) {
-                console.log(error);
-            }
-        }
-    }
+  mounted () {
+    axios
+      .get ('http://localhost:3000/api/messages')
+      .then (response => this.message = response.data )
+      .catch ( error=> console.log(error))
+  }
 }
-
 </script>
 
-<style>
+<style lang="scss">
+  .card{
+    margin-bottom: 15px;
+    margin-top: 15px
+  }
+
 </style>
