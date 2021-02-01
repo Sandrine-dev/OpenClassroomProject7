@@ -24,6 +24,10 @@
           </form>
         </div>
       </div>
+      <div class="padding">
+        <button class="btn btn-primary w-35 btn-separation" @click="like(like)"><i class="fas fa-thumbs-up"></i> Like</button>
+        <button class="btn btn-primary w-35" @click="dislike(dislike)"><i class="fas fa-thumbs-down"></i> Dislike</button>
+      </div>
     </div>
   </div>
 </template>
@@ -78,10 +82,37 @@
           console.log('le commentaire ne c\'est pas envoyé');
         })
 
-        
+      },
+
+    like: function(like) {
+      Axios
+      .post("http://localhost:3000/api/messages/" + this.messageId + "/vote/like", {
+        like: like
+      })
+      .then(()=> {
+        console.log('post Liker')
+      })
+      .catch(() => {
+        console.log('impossible de liker')
+      })
+    },
+
+    dislike: function(dislike) {
+      Axios
+      .post("http://localhost:3000/api/messages/" + this.messageId + "/vote/dislike", {
+        dislike: dislike
+      })
+      .then(()=> {
+        console.log('post disliker')
+      })
+      .catch(() => {
+        console.log('impossible de disliker')
+      })
+    }
 
 
-      }
+
+
 
 
 
@@ -103,5 +134,9 @@
 
   .react-news {
     margin-top: 15px ;
+  }
+
+  .btn-separation{
+    margin-right: 15px;
   }
 </style>

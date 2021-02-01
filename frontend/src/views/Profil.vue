@@ -1,5 +1,5 @@
 <template>
-    <div class="Profile container">
+    <div class="profil container">
     <h1>Informations personnelles</h1>
 
         <section class="userInfo">

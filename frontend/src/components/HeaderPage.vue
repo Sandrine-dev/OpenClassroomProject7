@@ -1,11 +1,11 @@
 <template>
   <div class="menu-header">
-    <div class="container">
-      <div class="row bg-dark">
+    <div class="container-fluid">
+      <div class="row">
           <nav class= "col navbar navbar-expand-lg navbar-dark">
             <router-link to="/" class="navbar-brand Groupomania"><img alt="Groupomania logo blanc" src="../assets/logoblanc.png" class="logo mx-1">Groupomania</router-link>
             
-            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarSupportedContent" data-target="#navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
         
@@ -71,5 +71,8 @@
   .logo{
     width: 30px;
     color: #cd515a;
+  }
+  .menu-header{
+    background: #2c3e50
   }
 </style>

@@ -56,6 +56,13 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    background: #2c3e50;
+  }
+
+  #page{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background: white;
   }
 
   #nav {
@@ -75,5 +82,9 @@
         color: #cd515a;
       }
     }
+  }
+
+  #footer{
+    background: #2c3e50;
   }
 </style>
