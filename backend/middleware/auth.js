@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
     const userId = jwtUtils.getUserId(token);
     
     if ( userId === -1) {
-      console.log('je suis pas identifié')
+      //console.log('je suis pas identifié')
       throw "Invalid user ID";
     } else {
       next();

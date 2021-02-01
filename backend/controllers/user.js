@@ -211,10 +211,10 @@ module.exports = {
         var image = null;
 
         if(req.file !== undefined){
-            console.log(req.file);
-            image = `images/${req.file.filename}`;
+            //console.log(req.file);
+            image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
         }
-        console.log(image);
+        //console.log(image);
 
         /* asyncLib.waterfall ([
 

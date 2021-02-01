@@ -17,7 +17,7 @@ module.exports = {
         //console.log(messageId);
 
         if (contenue == null) {
-            return res.status(400).json({ 'error' : 'veuillez ajouter du texte' + err});
+            return res.status(400).json({ msg : 'veuillez ajouter du texte' + err});
         }
 
         models.User.findOne({
@@ -36,14 +36,14 @@ module.exports = {
                     return res.status(201).json({'commentaireId' : newCommentaire.id});
                 })
                 .catch(function(err) {
-                    return res.status(500).json({'error' : 'impossible d\'ajouter le commentaires' + err})
+                    return res.status(500).json({msg : 'impossible d\'ajouter le commentaires' + err})
                 })
             }else {
-                return res.status(409).json({'error': 'Utilateur introuvable' });
+                return res.status(409).json({msg: 'Utilateur introuvable' });
             }
         })
         .catch(function(err){
-            return res.status(500).json({'error' : 'impossible de vérifier l\'utilisateur' + err});
+            return res.status(500).json({ msg : 'impossible de vérifier l\'utilisateur' + err});
         })
 
 
@@ -73,12 +73,12 @@ module.exports = {
             if (commentaires) {
                 res.status(200).json(commentaires);
             } else {
-                res.status(404).json ({ 'error' : 'aucun commentaires trouvé'});
+                res.status(404).json ({ msg : 'aucun commentaires trouvé'});
             }
         })
         .catch (function(err) {
-            console.log(err);
-            res.status(500).json({'error': 'champ incomplet' +err });
+            //console.log(err);
+            res.status(500).json({ msg: 'champ incomplet' +err });
         })
 
     }

@@ -68,6 +68,13 @@ export default {
 
   //Commentaire
 
+  //Créer un Nouveau Commentaire
+  createCommentaire(post) {
+    return axios
+      .post(url + ':messageId/comment/new', post)
+      .then(response => response.data);
+  },
+
 
   //Like
 

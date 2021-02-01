@@ -76,7 +76,7 @@
                     } catch (error) {
                         this.isLoggingIn = false
                         this.msg = error.response.data.msg;
-                        console.log(error);
+                        //console.log(error);
                     }
                 
                     

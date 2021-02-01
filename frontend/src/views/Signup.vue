@@ -42,8 +42,8 @@
 </template>
 
 <script>
-    import LoadingComponent from '../components/Loading'
-    import AuthService from '@/AuthService.js'
+    import LoadingComponent from '../components/Loading';
+    import AuthService from '@/AuthService.js';
 
     export default {
         components : { LoadingComponent },
@@ -82,7 +82,7 @@
                     } catch (error) {
                         this.isSignIn = false
                         this.msg = error.response.data.msg;
-                        console.log(error);
+                        //console.log(error);
                     }
 
                     

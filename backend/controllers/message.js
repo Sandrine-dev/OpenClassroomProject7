@@ -17,16 +17,16 @@ module.exports = {
         var contenue = req.body.message;
         var image = null;
 
-        console.log(req);
+        //console.log(req);
 
         if(req.file !== undefined){
-            console.log(req.file);
+            //console.log(req.file);
             image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
         }
-        console.log(image);
+        //console.log(image);
 
         if (contenue == null) {
-            return res.status(400).json({ message : 'veuillez ajouter du texte'});
+            return res.status(400).json({ msg : 'veuillez ajouter du texte'});
         }
 
         /*asyncLib.waterfall([
@@ -37,7 +37,7 @@ module.exports = {
                     where: { id: userId }
                 })
                 .then((user) => {
-                    console.log(user);
+                    //console.log(user);
                     done(null, user);
                 })
                 .catch(function(err) {
@@ -86,18 +86,18 @@ module.exports = {
                         likes : 0,
                 })
                 .then(function(newMessage){
-                    console.log(newMessage);
+                    //console.log(newMessage);
                     return res.status(201).json({'messageId' : newMessage.id});
                 })
                 .catch(function(err) {
-                    return res.status(500).json({message: 'Impossible d\'ajouter le message' + err});
+                    return res.status(500).json({msg: 'Impossible d\'ajouter le message' + err});
                 })
             } else {
-                return res.status(409).json({message: 'utilisateur inconnue'});
+                return res.status(409).json({msg: 'utilisateur inconnue'});
             }
         })
         .catch(function(err) {
-            return res.status(500).json ({ message :'Impossible de vérifier l\'utilisateur' + err });
+            return res.status(500).json ({ msg :'Impossible de vérifier l\'utilisateur' + err });
         })
     },
 
@@ -126,11 +126,11 @@ module.exports = {
             if (messages) {
                 res.status(200).json(messages);
             } else {
-                res.status(404).json ({ message : 'aucun messages trouvé'});
+                res.status(404).json ({ msg : 'aucun messages trouvé'});
             }
         })
         .catch (function(err) {
-            res.status(500).json({message: 'champ incomplet' + err});
+            res.status(500).json({msg: 'champ incomplet' + err});
         });
     },
 
@@ -156,13 +156,13 @@ module.exports = {
                 fs.unlink(`${imageUrl}`, () => {
                     messageFound.destroy()
                 })
-                return res.status(201).json({message: 'message supprimé'});
+                return res.status(201).json({msg: 'message supprimé'});
             }else {
-                return res.status(403).json({ message : 'ce message n\'est pas dans notre base de donné'});
+                return res.status(403).json({ msg: 'ce message n\'est pas dans notre base de donné'});
             }
         })
         .catch(function(err) {
-            return res.status(500).json ({ message : 'impossible de vérifier l\'utilisateur' + err})
+            return res.status(500).json ({ msg : 'impossible de vérifier l\'utilisateur' + err})
         });
 
     }
