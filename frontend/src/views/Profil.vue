@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4>Votre photo de profile</h4>
-                    <img class="img-fluid" :src="`http://localhost:3000/${user.photo}`">
+                    <img class="img-profile" :src="user.photo">
                     <div class="mb-3 align-items-start">
                         <label for="formFileSm" class="form-label d-flex align-items-start">Ajoutez une photo de profile</label>
                         <input class="form-control form-control-sm" type="file" id="file" ref="fileInput" v-on:change="onFileUpload">
@@ -118,7 +118,10 @@ export default {
     .card{
         margin-bottom: 15px;
     }
-    .card-end{
-        margin-bottom: 30px;
+
+    .img-profile{
+        width: 200px;
+        border-radius: 50%;
+        border: 4px solid #2c3e50;
     }
 </style>

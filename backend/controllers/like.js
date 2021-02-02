@@ -17,7 +17,7 @@ module.exports = {
         var messageId = req.params.messageId;
 
         if (messageId <= 0) {
-            return res.status(400).json ({ 'error' : 'paramètre invalide'});
+            return res.status(400).json ({ msg : 'paramètre invalide'});
         }
 
         //waterfall
@@ -32,7 +32,7 @@ module.exports = {
                     done(null, messageFound);
                 })
                 .catch(function(err) {
-                    return res.status(500).json({ 'error' : 'impossible de vérifier le message' + err});
+                    return res.status(500).json({ msg : 'impossible de vérifier le message' + err});
                 });
             },
             function(messageFound, done) {
@@ -44,10 +44,10 @@ module.exports = {
                         done(null, messageFound, userFound);
                     })
                     .catch(function(err) {
-                        return res.status(500).json({ 'error' : 'impossible de vérifier l\'utilisateur'});
+                        return res.status(500).json({ msg : 'impossible de vérifier l\'utilisateur'});
                     });
                 }else{
-                    res.status(404).json({'error': 'Message déjà like' + err});
+                    res.status(404).json({ msg: 'Message déjà like'});
                 }
             },
             function(messageFound, userFound, done) {
@@ -58,24 +58,24 @@ module.exports = {
                             messageId: messageId
                         }
                     })
-                    .then(function(UserAlreadyLiked) {
-                        done (null, messageFound, userFound, UserAlreadyLiked);
+                    .then(function(UserAlreadyLikedFound) {
+                        done (null, messageFound, userFound, UserAlreadyLikedFound);
                     })
                     .catch(function(err) {
-                        return res.status(500).json ({ 'error' : 'Impossible de savoir si l\'utilisateur à déjà aimé'});
+                        return res.status(500).json ({ msg : 'Impossible de savoir si l\'utilisateur à déjà like'});
                     });
                 } else {
-                    res.status(404).json({ 'error' : 'Utilisateur introuvable'});
+                    res.status(404).json({ msg : 'Utilisateur introuvable'});
                 }
             },
-            function(messageFound, userFound, UserAlreadyLiked, done) {
-                if (!UserAlreadyLiked) {
-                    messageFound.addUser(userFound, {isLike : LIKED})
+            function(messageFound, userFound, UserAlreadyLikedFound, done) {
+                if (!UserAlreadyLikedFound) {
+                        messageFound.addUser(userFound, {isLike : LIKED})
                     .then(function (alreadyLikeFound) {
                         done(null, messageFound, userFound);
                     })
                     .catch(function(err) {
-                        return res.status(500).json ({ 'error' : 'impossible de prendre la réaction de l\'utilisateur'});
+                        return res.status(500).json ({ msg : 'impossible de prendre la réaction de l\'utilisateur'});
                     });
                 } else {
                     if (UserAlreadyLikedFound.isLike === DISLIKED) {
@@ -86,30 +86,30 @@ module.exports = {
                             done(null, messageFound, userFound);
                         })
                         .catch(function(err) {
-                            res.status(500).json({'error': 'impossible de modifier la réaction' + err});
+                            res.status(500).json({ msg: 'impossible de modifier la réaction'});
                         });
                     } else {
-                        res.status(409).json({ 'error' : 'message déjà aimé'});
+                        res.status(409).json({ msg : 'message déjà like'});
                     }
                     
                 }
             },
             function(messageFound, userFound, done) {
                 messageFound.update({
-                    likes: + messageFound.likes + 1,
+                    likes: messageFound.likes + 1,
                 })
                 .then(function() {
                     done(messageFound);
                 })
                 .catch(function(err) {
-                    res.status(500).json({ 'error': 'Impossible de mettre à jour le compteur de like'});
+                    res.status(500).json({ msg: 'Impossible de mettre à jour le compteur de like'});
                 })
             }
          ], function(messageFound) {
              if (messageFound) {
                  return res.status(201).json(messageFound);
              } else {
-                 return res.status(500).json({'error' :'cannot update message'});
+                 return res.status(500).json({msg :'impossible de mettre à jour le message'});
              }
          });
     },
@@ -123,19 +123,20 @@ module.exports = {
         var messageId = req.params.messageId;
 
         if (messageId <= 0) {
-            return res.status(400).json ({ 'error' : 'paramètre invalide'});
+            return res.status(400).json ({ msg : 'paramètre invalide'});
         }
 
         asyncLib.waterfall([
             function (done) {
                 models.Message.findOne({
+                    attibutes: ['id'],
                     where: { id: messageId }
                 })
                 .then(function(messageFound) {
                     done(null, messageFound);
                 })
                 .catch(function(err) {
-                    return res.status(500).json({ 'error' : 'impossible de vérifier le message' + err});
+                    return res.status(500).json({ msg : 'impossible de vérifier le message'});
                 });
             },
             function(messageFound, done) {
@@ -147,10 +148,10 @@ module.exports = {
                         done(null, messageFound, userFound);
                     })
                     .catch(function(err) {
-                        return res.status(500).json({ 'error' : 'impossible de vérifier l\'utilisateur'});
+                        return res.status(500).json({ msg : 'impossible de vérifier l\'utilisateur'});
                     });
                 }else{
-                    res.status(404).json({'error': 'Message déjà aimé'});
+                    res.status(404).json({ msg: 'Message déjà dislike'});
                 }
             },
             function(messageFound, userFound, done) {
@@ -161,27 +162,39 @@ module.exports = {
                             messageId: messageId
                         }
                     })
-                    .then(function(isUserAlreadyLiked) {
-                        done (null, messageFound, userFound, isUserAlreadyLiked);
+                    .then(function(userAlreadyLikedFound) {
+                        done (null, messageFound, userFound, userAlreadyLikedFound);
                     })
                     .catch(function(err) {
-                        return res.status(500).json ({ 'error' : 'Impossible de savoir si l\'utilisateur à déjà aimé'});
+                        return res.status(500).json ({ msg : 'Impossible de savoir si l\'utilisateur à déjà disliker'});
                     });
                 } else {
-                    res.status(404).json({ 'error' : 'Utilisateur introuvable'});
+                    res.status(404).json({ msg : 'Utilisateur introuvable'});
                 }
             },
-            function(messageFound, userFound, isUserAlreadyLiked, done) {
-                if (!isUserAlreadyLiked) {
-                   isUserAlreadyLiked.destroy()
+            function(messageFound, userFound, userAlreadyLikedFound, done) {
+                if (!userAlreadyLikedFound) {
+                        messageFound.addUser(userFound, { isLike: DISLIKED })
                     .then(function () {
                         done(null, messageFound, userFound);
                     })
                     .catch(function(err) {
-                        return res.status(500).json ({ 'error' : 'impossible de prendre la réaction de l\'utilisateur'});
+                        return res.status(500).json ({ msg : 'impossible de prendre la réaction de l\'utilisateur'});
                     });
                 } else {
-                    done(null, messageFound, userFound);
+                    if (userAlreadyLikedFound.isLike === LIKED) {
+                            userAlreadyLikedFound.update({
+                            isLike: DISLIKED,
+                        })
+                        .then(function() {
+                            done(null, messageFound, userFound);
+                        })
+                        .catch(function(err) {
+                            res.status(500).json({ msg: 'Impossible de mettre à jour la réaction' });
+                        });
+                    } else {
+                        res.status(409).json({ msg: 'message déjà dislike' });
+                    }
                 }
             },
             function(messageFound, userFound, done) {
@@ -192,14 +205,14 @@ module.exports = {
                     done(messageFound);
                 })
                 .catch(function(err) {
-                    res.status(500).json({ 'error': 'Impossible de mettre à jour le compteur de like'});
+                    res.status(500).json({ msg: 'Impossible de mettre à jour le compteur de like'});
                 })
             }
          ], function(messageFound) {
              if (messageFound) {
                  return res.status(201).json(messageFound);
              } else {
-                 return res.status(500).json({'error' :'cannot update message'});
+                 return res.status(500).json({msg :'Impossible de mettre à jour le message'});
              }
          });
     }

@@ -61,7 +61,7 @@
 
   #page{
     padding-top: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 25px;
     background: white;
   }
 
