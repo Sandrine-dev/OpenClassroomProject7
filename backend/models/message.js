@@ -3,8 +3,7 @@
 module.exports = (sequelize, DataTypes) => {
   var Message = sequelize.define('Message', {
    	  message: DataTypes.STRING,
-    	image_url: DataTypes.STRING,
-    	image_alt: DataTypes.STRING,
+    	attachement: DataTypes.STRING,
       likes: DataTypes.INTEGER,
       userId: DataTypes.INTEGER
   }, {

@@ -82,7 +82,7 @@ module.exports = {
                 var newMessage = models.Message.create({
                         userId: user.id,
                         message : contenue,
-                        image_url: image,
+                        attachement: image,
                         likes : 0,
                 })
                 .then(function(newMessage){
@@ -151,9 +151,9 @@ module.exports = {
         .then(function(messageFound){
             if(messageFound) {
                 //console.log(messageFound);
-                var imageUrl = messageFound.image_url;
-                //console.log(`images/${imageUrl}`);
-                fs.unlink(`${imageUrl}`, () => {
+                var image = messageFound.attachement;
+                //console.log(`images/${image}`);
+                fs.unlink(`${image}`, () => {
                     messageFound.destroy()
                 })
                 return res.status(201).json({msg: 'message supprimé'});

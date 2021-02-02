@@ -19,8 +19,7 @@ module.exports = {
         var prenom = req.body.prenom;
         var poste = req.body.poste;
         var password = req.body.password;
-        var photoUrl = req.body.photo_url;
-        var photoAlt = req.body.photo_alt;
+        var photo = req.body.photo;
 
         //Verification que tous est bien tapé correctement par l'utilisateur
 
@@ -59,8 +58,8 @@ module.exports = {
                         prenom: prenom,
                         poste: poste,
                         password: bcryptedPassword,
-                        photoUrl: photoUrl,
-                        photoAlt: photoAlt
+                        photo: photo,
+                        isAdmin: 0
                     })
                     .then(function(newUser) {
                         return res.status(201).json({ 'userId' : newUser.id})
@@ -184,7 +183,7 @@ module.exports = {
             return res.status(400).json({ msg : 'Session expiré '});
         
         models.User.findOne({
-            attributes: ['id', 'email', 'nom','prenom', 'poste', 'photo_alt', 'photo_url'],
+            attributes: ['id', 'email', 'nom','prenom', 'poste', 'photo'],
             where: { id: userId }
 
         })
@@ -265,7 +264,7 @@ module.exports = {
             if (user) {
                 user.update ({
                     poste: (poste ? poste : user.poste),
-                    photo_url: (image ? image : user.image)
+                    photo: (image ? image : user.image)
                 })
                 .then(function (user) {
                     return res.status(201).json({ user })
@@ -300,8 +299,8 @@ module.exports = {
             if (userFound) {
                 bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
                     if (resBycrypt) {
-                        var imageUrl = userFound.photo_url;
-                        fs.unlink(`${imageUrl}`, () => {
+                        var image = userFound.photo;
+                        fs.unlink(`${image}`, () => {
                             userFound.destroy()
                         })
                         return res.status(201).json({ msg : 'utilisateur supprimé'});
@@ -329,7 +328,7 @@ module.exports = {
              return res.status(400).json({ msg : 'Session expiré '});
          
          models.User.findOne({
-             attributes: ['id', 'email', 'nom','prenom', 'poste', 'photo_alt', 'photo_url'],
+             attributes: ['id', 'email', 'nom','prenom', 'poste', 'photo'],
              where: { id: userId }
  
          })

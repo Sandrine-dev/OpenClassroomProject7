@@ -6,7 +6,7 @@
         </div>
         <div class="content">
             <p>{{message}}</p>
-            <img v-bind:src= "fileToDisplay" class="filePost">
+            <img v-bind:src= "fileToDisplay" class="img-fluid">
             <p class="card-text"><small class="text-muted"> Publiez le: {{createdAt}}</small></p>
         </div>
      
@@ -138,5 +138,9 @@
 
   .btn-separation{
     margin-right: 15px;
+  }
+
+  .padding{
+    padding-bottom: 15px;
   }
 </style>

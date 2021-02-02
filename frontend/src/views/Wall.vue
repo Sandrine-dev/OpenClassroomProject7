@@ -28,7 +28,7 @@
       <h2 class="titre">Actualités de vos collègues</h2>
 
       <div class="container wallMessage">
-        <Post v-for="message in response" :key="message.id" :message="message.message" :fileToDisplay="message.image_url" :userId="message.userId" :messageId="message.id" :createdAt="message.createdAt" class="allPost"></Post>
+        <Post v-for="message in response" :key="message.id" :message="message.message" :fileToDisplay="message.attachement" :userId="message.userId" :messageId="message.id" :createdAt="message.createdAt" class="allPost"></Post>
       </div>
     </section>
   </div>

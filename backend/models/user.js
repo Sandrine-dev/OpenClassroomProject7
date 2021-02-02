@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     prenom: DataTypes.STRING,
     poste: DataTypes.STRING,
     password: DataTypes.STRING,
-    photo_url: DataTypes.STRING,
-    photo_alt: DataTypes.STRING
+    photo: DataTypes.STRING,
+    isAdmin: DataTypes.BOOLEAN
   }, { 
 
   });
