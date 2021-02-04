@@ -10,12 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     Commentaire.associate = (models) => {
       Commentaire.belongsTo(models.User, {
         foreignKey: 'userId',
-        as: 'user',
       });
 
       Commentaire.belongsTo(models.Message, {
       foreignKey: 'messageId',
-      as: 'message',
       });
     };
 

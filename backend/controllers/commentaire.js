@@ -27,7 +27,7 @@ module.exports = {
 
         .then(function(userFound) {
             if (userFound) {
-                var newCommentaire = models.Commentaire.create({
+                models.Commentaire.create({
                     commentaire: contenue,
                     userId: userFound.id,
                     messageId: messageId
@@ -59,6 +59,7 @@ module.exports = {
             limit = 50;
         }
         
+
         models.Commentaire.findAll ({
             order: [(order != null) ? order.split(':') : ['createdAt', 'DESC']],
             attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
@@ -68,6 +69,7 @@ module.exports = {
                 model : models.User,
                 attributes: ['nom', 'prenom']
             }]
+
         })
         .then(function(commentaires) {
             if (commentaires) {

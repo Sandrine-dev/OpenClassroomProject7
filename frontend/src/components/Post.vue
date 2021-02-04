@@ -2,7 +2,7 @@
   <div class="messageSee">
     <div class="allMessage card">
         <div class="user card-header d-flex align-items-center">
-          <img class="avatar" :src="user.photo">
+          <img class="avatar" >
           <p>{{user.nom}} {{user.prenom}}</p>
         </div>
         <div class="content">
@@ -32,7 +32,7 @@
 
       </div>
     </div>
-      {{commentaire.commentaire}}
+     <!-- {{commentaire.commentaire}}-->
   </div>
 </template>
 
@@ -59,7 +59,7 @@
     
     mounted() {
       this.findId();
-      this.findComment();
+      //this.findComment();
     },
 
     methods: {
@@ -75,7 +75,7 @@
           });
       },
 
-      findComment: async function () {
+      /*findComment: async function () {
         await Axios
           .get ("http://localhost:3000/" + this.messageId + "/comment")
           .then((response) => {
@@ -99,7 +99,7 @@
           console.log('le commentaire ne c\'est pas envoyé');
         })
 
-      },
+      },*/
 
     like: function(like) {
       Axios

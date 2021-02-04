@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
       associate: function(models) {
          // define association here
       models.User.hasMany(models.Message);
-
       models.User.hasMany(models.Commentaire);
       }
     }

@@ -4,8 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   var Message = sequelize.define('Message', {
    	  message: DataTypes.STRING,
     	attachement: DataTypes.STRING,
-      likes: DataTypes.INTEGER,
-      userId: DataTypes.INTEGER
+      likes: DataTypes.INTEGER
   }, {
 
   });
@@ -22,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       associate: function(models) {
          // define association here
         models.Message.hasMany(models.commentaire);
-
         models.Message.belongsTo(models.User, {foreignKey: "userId"});
       }
     }

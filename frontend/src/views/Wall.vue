@@ -15,7 +15,7 @@
               <input class="form-control form-control-sm" type="file" id="file" ref="fileInput" v-on:change="onFileUpload">
             </div>
             <div class="d-flex panel-footer form-group">
-              <button class="btn btn-primary w-35" @click="createMessage(message, image)" type="submit" value="Publier">Publier</button>
+              <button class="btn btn-primary w-35" @click="createMessage(message)" type="submit" value="Publier">Publier</button>
 
             </div>
         </form>
@@ -76,7 +76,7 @@ export default {
       Axios
       .get ('http://localhost:3000/api/messages')
       .then ((response) => {this.response = response.data;
-      //console.log(response.data);
+      console.log(response.data);
       })
       .catch ( error=> console.log(error))
     }

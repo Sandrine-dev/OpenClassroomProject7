@@ -1,6 +1,4 @@
 node_modules
-config
-migrations
 seeders
 package.json
 package-lock.json

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
        model: 'User',
        key: 'id'
      }
-   }
+   },
  }, {});
   
  Like.associate = (models) => {

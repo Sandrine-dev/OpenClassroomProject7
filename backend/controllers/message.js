@@ -1,6 +1,5 @@
 //Import
 const models = require ('../models');
-const asyncLib = require ('async');
 const fs = require ('fs');
 var jwtUtils = require ('../utils/jwtutils');
 
@@ -29,65 +28,24 @@ module.exports = {
             return res.status(400).json({ msg : 'veuillez ajouter du texte'});
         }
 
-        /*asyncLib.waterfall([
-           function(done) {
-               //console.log(userId);
-               models.User.findOne({
-                    attributes: ['id'],
-                    where: { id: userId }
-                })
-                .then((user) => {
-                    //console.log(user);
-                    done(null, user);
-                })
-                .catch(function(err) {
-                    return res.status(500).json({ 'error' : 'impossible de vérifier l\'utilisateur' });
-                });
-
-            },
-            function (user, done) {
-                if (user) {
-                    models.Message.create({
-                        userId: user.id,
-                        message : contenue,
-                        imagealt: imagealt,
-                        imageurl : imageurl,
-                        likes : 0,
-                    })
-                    .then(function(newMessage) {
-                        done(newMessage);
-                    });
-                } else {
-                    res.status(404).json ({ 'error' : 'Utilisteur non trouvé'});
-                }
-            },
-             
-        ], 
-        function (newMessage) {
-            if (newMessage) {
-                return res.status(201).json(newMessage);
-            } else {
-                return res.status(500).json({ 'error' : 'Impossible de poster le message!'});
-            } 
-         });*/
-
+    
         models.User.findOne({
-            attributes: ['id'],
+            attributes: ['id', 'nom', 'prenom'],
             where: { id: userId}
         })
 
         .then(function(user) {
             if(user) {
                 //console.log(image);
-                var newMessage = models.Message.create({
-                        userId: user.id,
+                models.Message.create({
                         message : contenue,
                         attachement: image,
                         likes : 0,
+                        userId: user.id,
                 })
                 .then(function(newMessage){
-                    //console.log(newMessage);
-                    return res.status(201).json({'messageId' : newMessage.id});
+                    console.log(newMessage);
+                    return res.status(201).json({'messageId' : newMessage});
                 })
                 .catch(function(err) {
                     return res.status(500).json({msg: 'Impossible d\'ajouter le message' + err});
@@ -113,7 +71,7 @@ module.exports = {
         }
 
         models.Message.findAll ({
-            order: [(order != null) ? order.split(':') : ['updatedAt', 'DESC']],
+            order: [(order != null) ? order.split(':') : ['createdAt', 'DESC']],
             attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
             limit: (!isNaN(limit)) ? limit : null,
             offset: (!isNaN(offset)) ? offset : null,
@@ -125,6 +83,7 @@ module.exports = {
         .then(function(messages) {
             if (messages) {
                 res.status(200).json(messages);
+                console.log(messages)
             } else {
                 res.status(404).json ({ msg : 'aucun messages trouvé'});
             }
