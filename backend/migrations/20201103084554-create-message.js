@@ -14,7 +14,8 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
       },
       message: {
         allowNull: false,
@@ -23,10 +24,6 @@ module.exports = {
       attachement: {
         allowNull: true,
         type: Sequelize.STRING
-      },
-      likes: {
-        allowNull: false,
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

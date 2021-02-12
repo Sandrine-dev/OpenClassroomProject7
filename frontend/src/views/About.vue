@@ -18,8 +18,8 @@
               </div>
               <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
               <div class="d-flex panel-footer form-group">
-                <button class="btn btn-primary w-25" @click="createMessage" v-if="!isPublished">Publier</button>
-                <button class="btn btn-primary w-25" disable v-if="isPublished"><loading-component  width="30"></loading-component></button>
+                <button class="btn btn-groupomania w-25" @click="createMessage" v-if="!isPublished">Publier</button>
+                <button class="btnbtn-groupomania w-25" disable v-if="isPublished"><loading-component  width="30"></loading-component></button>
 
               </div>
           </form>

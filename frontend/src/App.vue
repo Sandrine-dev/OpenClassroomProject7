@@ -84,6 +84,15 @@
     }
   }
 
+  .card {
+    border-color: #2c3e50;;
+  }
+
+  .btn-groupomania{
+    background: #2c3e50;
+    color:white;
+  }
+
   #footer{
     background: #2c3e50;
   }

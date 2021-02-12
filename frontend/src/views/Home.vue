@@ -11,7 +11,7 @@
       <div class= "col-lg-4">
         <div class= "bg-white text-left d-flex justify-content-center">
           <router-link to="login" class="font-weight-bold btn btn-dark mx-1 p-3">Login</router-link>
-          <router-link to="signup/" class="font-weight-bold btn btn-dark mx-1 p-3">Sign Up</router-link>
+          <router-link to="signup" class="font-weight-bold btn btn-dark mx-1 p-3">Sign Up</router-link>
         </div>
       </div>
     </div>

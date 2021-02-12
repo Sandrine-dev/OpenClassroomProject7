@@ -29,8 +29,8 @@
                         </div>
                         <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
                         <div class="form-group d-flex justify-content-center">
-                            <button class="btn btn-primary w-25" @click="signUp" v-if="!isSignIn">Sign Up</button>
-                            <button class="btn btn-primary w-25" disabled v-if="isSignIn"><loading-component width="30"></loading-component></button>
+                            <button class="btn btn-groupomania w-25" @click="signUp" v-if="!isSignIn">Sign Up</button>
+                            <button class="btn btn-groupomania w-25" disabled v-if="isSignIn"><loading-component width="30"></loading-component></button>
 
                         </div>
                     </form>

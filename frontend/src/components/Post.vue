@@ -1,10 +1,16 @@
 <template>
   <div class="messageSee">
     <div class="allMessage card">
-        <div class="user card-header d-flex align-items-center">
-          <img class="avatar" >
-          <p>{{user.nom}} {{user.prenom}}</p>
+        <div class="user card-header d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <img class="avatar" :src="user_photo">
+            <p>{{user_nom}} {{user_prenom}}</p>
+          </div>
+          <div> 
+            <button class="btn btn-groupomania w-35 btn-separation" @click="deleteMessage(message.id)"><i class="fas fa-trash"></i></button>
+          </div>
         </div>
+
         <div class="content">
             <p>{{message}}</p>
             <img v-bind:src= "fileToDisplay" class="img-fluid">
@@ -20,72 +26,49 @@
               <input type="commentaire" class="panel-body container-fluid form-control" placeholder="nouveau commentaire" rows="3" v-model="commentaire"/>
             </div>
             <div class="d-flex panel-footer form-group">
-              <button class="btn btn-primary w-35" type="submit" value="Publier" @click="createCommentaire(commentaire)">Publier</button>
+              <button class="btn btn-groupomania w-35" type="submit" value="Publier" @click="createCommentaire(commentaire)">Publier</button>
             </div>
           </form>
         </div>
       </div>
-      <div class="padding">
-        <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
-        <button class="btn btn-primary w-35 btn-separation" @click="like(like)"><i class="fas fa-thumbs-up"></i> Like </button>
-        <button class="btn btn-primary w-35" @click="dislike(dislike)"><i class="fas fa-thumbs-down"></i> Dislike</button>
-
-      </div>
+      <button class="btn btn-groupomania" data-toggle="collapse" data-target="#comments">Commentaire</button>
+      <Comments v-for="commentaire in response" :key="commentaire.id" :commentaire="commentaire.commentaire" :userNom="commentaire.user.nom" :userPrenom="commentaire.user.prenom" :userId="commentaire.userId" :messageId="commentaire.messageId" :commentaireId="commentaire.id" :createdAt="commentaire.createdAt" class="allComments"></Comments>
     </div>
-     <!-- {{commentaire.commentaire}}-->
   </div>
 </template>
 
 <script>
   import Axios from "axios";
+  import Comments from "./Commentaire.vue";
 
   export default {
+    components : {Comments},
     data () {
       return {
         user: '',
         commentaire: '',
         msg: '',
+        response: [],
       }
     },
 
     props:{
       message: String,
       fileToDisplay: String,
-      userId: Number,
+      user_nom: String,
+      user_prenom: String,
+      user_photo: String,
       messageId:Number,
       createdAt:String,
     },
 
-    
-    mounted() {
-      this.findId();
-      //this.findComment();
+    created () {
+      this.allComments();
     },
 
-    methods: {
-      findId: async function () {
-        await Axios
-          .get("http://localhost:3000/api/user/" + this.userId)
-          .then((response) => {
-            this.user = response.data;
-            return this.user;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      },
 
-      /*findComment: async function () {
-        await Axios
-          .get ("http://localhost:3000/" + this.messageId + "/comment")
-          .then((response) => {
-            this.commentaire = response.data;
-            return this.commentaire;
-          })
-          .catch((error) => {
-              console.log(error);
-            });
-      },
+    methods: {
+
 
       createCommentaire: function(commentaire){
 
@@ -99,38 +82,31 @@
           console.log('le commentaire ne c\'est pas envoyé');
         })
 
-      },*/
+      },
 
-    like: function(like) {
-      Axios
-      .post("http://localhost:3000/api/messages/" + this.messageId + "/vote/like", {
-        like: like})
-      .then(()=> {
-        console.log('post Liker')
-      })
-      .catch((error) => {
-        console.log('impossible de liker');
-        this.msg = error.response.data.msg;
-      })
-    },
-
-    dislike: function(dislike) {
-      Axios
-      .post("http://localhost:3000/api/messages/" + this.messageId + "/vote/dislike", {
-        dislike: dislike})
-      .then(()=> {
-        console.log('post disliker')
-      })
-      .catch((error) => {
-        console.log('impossible de disliker');
-        this.msg = error.response.data.msg;
-      })
-    }
+      allComments: function() {
+        Axios
+        .get('http://localhost:3000/api/'+ this.messageId + '/comment')
+        .then ((response) => {this.response =response.data; 
+        console.log(response.data);
+        })
+        .catch (error => console.log(error))
+      },
 
 
-
-
-
+      deleteMessage: function(id) {
+        Axios
+        .delete("http://localhost:3000/api/messages/" + this.messageId, {
+          messageId: id
+        })
+        .then(() => {
+          console.log('message supprimé');
+        })
+        .catch((error) => {
+          console.log('impossible de supprimé ce message');
+          console.log(error.response.data.msg);
+        })
+      }
 
 
     },
@@ -174,6 +150,11 @@
 
   .card-header{
     background: #2c3e50;
+  }
+
+  .content {
+    padding-top: 15px;
+    font-size: 20px;
   }
 
 </style>

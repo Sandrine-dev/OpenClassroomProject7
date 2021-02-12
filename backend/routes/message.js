@@ -9,7 +9,7 @@ const auth = require ('../middleware/auth');
 //Routes
 router.post('/messages/new',auth, multer, messageCtrl.createMessage);
 router.get('/messages', auth, messageCtrl.listMessages);
-router.delete('/messages', auth , messageCtrl.deleteMessage);
+router.delete('/messages/:id', auth , messageCtrl.deleteMessage);
 
 
 module.exports = router;

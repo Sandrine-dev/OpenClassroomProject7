@@ -2,6 +2,8 @@
 const models = require ('../models');
 const fs = require ('fs');
 var jwtUtils = require ('../utils/jwtutils');
+const message = require('../models/message');
+const user = require('../models/user');
 
 
 module.exports = {
@@ -30,18 +32,17 @@ module.exports = {
 
     
         models.User.findOne({
-            attributes: ['id', 'nom', 'prenom'],
+            attributes: ['id'],
             where: { id: userId}
         })
 
         .then(function(user) {
             if(user) {
                 //console.log(image);
-                models.Message.create({
+                var newMessage = models.Message.create({
+                        userId: user.id,
                         message : contenue,
                         attachement: image,
-                        likes : 0,
-                        userId: user.id,
                 })
                 .then(function(newMessage){
                     console.log(newMessage);
@@ -70,20 +71,28 @@ module.exports = {
             limit = 50;
         }
 
+        console.log(message);
+
         models.Message.findAll ({
             order: [(order != null) ? order.split(':') : ['createdAt', 'DESC']],
             attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
             limit: (!isNaN(limit)) ? limit : null,
             offset: (!isNaN(offset)) ? offset : null,
             include: [{
-                model : models.User,
-                attributes: ['nom', 'prenom']
-            }]
+                    model : models.User,
+                    as: 'user',
+                    attributes: ['nom', 'prenom']
+                },
+                {   
+                    model: models.Commentaire,
+                    as: 'comments'
+                }
+            ]
         })
         .then(function(messages) {
             if (messages) {
                 res.status(200).json(messages);
-                console.log(messages)
+                //console.log(messages);
             } else {
                 res.status(404).json ({ msg : 'aucun messages trouvé'});
             }
@@ -97,27 +106,37 @@ module.exports = {
 
         // récupéréer l'autorisation
         var headerAuth  = req.headers['authorization'];
-        var userId      = jwtUtils.getUserId(headerAuth);
+        var userId = jwtUtils.getUserId(headerAuth);
 
         //Params
-        var messageId = req.body.id;
+
+        //console.log(userId);
         
         models.Message.findOne({
-            where: {id: messageId}
+            where: {id: req.params.id}
         })
 
 
         .then(function(messageFound){
             if(messageFound) {
-                //console.log(messageFound);
-                var image = messageFound.attachement;
-                //console.log(`images/${image}`);
-                fs.unlink(`${image}`, () => {
-                    messageFound.destroy()
-                })
-                return res.status(201).json({msg: 'message supprimé'});
+
+                var isAdmin = req.body.isAdmin;
+                //console.log(userId);
+                
+                if (isAdmin === 1 || userId){
+                    //console.log(messageFound);
+                    var image = messageFound.attachement;
+                    //console.log(`images/${image}`);
+                    fs.unlink(`${image}`, () => {
+                        messageFound.destroy()
+                    })
+                    return res.status(201).json({msg: 'message supprimé'});
+                }else {
+                    return res.status(403).json({msg: 'vous n\'êtes pas autorisé à supprimer ce message'})
+                }
+                
             }else {
-                return res.status(403).json({ msg: 'ce message n\'est pas dans notre base de donné'});
+                return res.status(403).json({ msg: 'ce message n\'est pas dans notre base de donné' +err });
             }
         })
         .catch(function(err) {
@@ -125,5 +144,6 @@ module.exports = {
         });
 
     }
+    
     
 }

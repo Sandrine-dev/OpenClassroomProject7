@@ -21,8 +21,8 @@
                         </div>
                         <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
                         <div class="form-group d-flex justify-content-center">
-                            <button class="btn btn-primary w-25" @click="login" v-if="!isLoggingIn">Login</button>
-                            <button class="btn btn-primary w-25" disabled v-if="isLoggingIn"><loading-component width="30"></loading-component></button>
+                            <button class="btn btn-groupomania w-25" @click="login" v-if="!isLoggingIn">Login</button>
+                            <button class="btn btn-groupomania w-25" disabled v-if="isLoggingIn"><loading-component width="30"></loading-component></button>
 
                         </div>
                     </form>
@@ -34,8 +34,9 @@
 </template>
 
 <script>
-    import LoadingComponent from '../components/Loading'
-    import AuthService from '@/AuthService.js'
+    import LoadingComponent from '../components/Loading';
+    import AuthService from '@/AuthService.js';
+
     export default {
         components : { LoadingComponent },
         data() {

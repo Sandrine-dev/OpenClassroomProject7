@@ -3,6 +3,7 @@ const models = require ('../models');
 const asyncLib = require ('async');
 var jwtUtils = require ('../utils/jwtutils');
 const message = require('./message');
+const user = require('../models/user');
 
 module.exports = {
     createCommentaire: function(req, res) {
@@ -25,14 +26,15 @@ module.exports = {
             where: {id: userId}
         })
 
-        .then(function(userFound) {
-            if (userFound) {
-                models.Commentaire.create({
+        .then(function(user) {
+            if (user) {
+                var newCommentaire = models.Commentaire.create({
                     commentaire: contenue,
-                    userId: userFound.id,
+                    userId: user.id,
                     messageId: messageId
                 })
                 .then(function(newCommentaire){
+                    //console.log(newCommentaire);
                     return res.status(201).json({'commentaireId' : newCommentaire.id});
                 })
                 .catch(function(err) {
@@ -65,10 +67,19 @@ module.exports = {
             attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
             limit: (!isNaN(limit)) ? limit : null,
             offset: (!isNaN(offset)) ? offset : null,
-            include: [{
-                model : models.User,
-                attributes: ['nom', 'prenom']
-            }]
+            where: ({messageId: req.params.messageId}),
+            include: [
+                {
+                    model : models.User,
+                    as : 'user',
+                    attributes: ['nom','prenom']
+                },
+                {
+                    model : models.Message,
+                    as: 'message',
+                    attributes: ['id']
+                }
+            ]
 
         })
         .then(function(commentaires) {
@@ -80,51 +91,47 @@ module.exports = {
         })
         .catch (function(err) {
             //console.log(err);
-            res.status(500).json({ msg: 'champ incomplet' +err });
+            res.status(500).json({ msg: 'champ incomplet' + err });
         })
 
-    }
-}
+    },
 
-/* 
-        var headerAuth = req.headers['authorization'];
-        var userId = jwtUtils.getUserId(headerAuth);
+    deleteComments: function(req, res) {
 
-        //Paramètres
-        var contenue = req.body.commentaire;
+        // récupéréer l'autorisation
+        var headerAuth  = req.headers['authorization'];
+        var userId      = jwtUtils.getUserId(headerAuth);
 
-        if (contenue == null) {
-            return res.status(400).json({ 'error' : 'veuillez ajouter du texte'});
-        }
+        //Params
 
-        models.User.findOne({
-            attributes: ['id'],
-            where: { id: userId}
-        })
+        console.log(user.id);
+        
+        models.Commentaire.findOne({
+            where: {id: req.params.id}
+        }) 
 
-        models.Message.findOne({
-            attributes['id'],
-            where: { id: messageId}
-        })
 
-        .then(function(user, message, done) {
-            if(user && message) {
-                var newCommentaire = models.Message.create({
-                    commentaire: contenue,
-                    messageId: messageFound.id,
-                    userId: userFound.id
-                })
-                .then(function(newCommentaire){
-                    return res.status(201).json({newCommentaire})
-                })
-                .catch(function(err) {
-                    return res.status(500).json({'error': 'Impossible d\'ajouter le commenaitre'})
-                })
-            } else {
-                return res.status(409).json({'error': 'message ou utilisateurs inexistatn'})
+        .then(function(commentsFound){
+            if(commentsFound) {
+
+                var isAdmin = req.body.isAdmin;
+                
+                if (isAdmin === 1 || userId ){
+                    
+                    commentsFound.destroy();
+
+                    return res.status(201).json({msg: 'commentaire supprimé'});
+                }else {
+                    return res.status(403).json({msg: 'vous n\'êtes pas autorisé à supprimer ce commentaire'})
+                }
+                
+            }else {
+                return res.status(403).json({ msg: 'ce commentaire n\'est pas dans notre base de donné' +err });
             }
         })
         .catch(function(err) {
-            return res.status(500).json ({ 'error' })
-        })
-*/
+            return res.status(500).json ({ msg : 'impossible de vérifier l\'utilisateur' + err})
+        });
+
+    }
+}

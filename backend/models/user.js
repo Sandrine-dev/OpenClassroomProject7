@@ -12,21 +12,16 @@ module.exports = (sequelize, DataTypes) => {
   }, { 
 
   });
-  User.associate = (models) => {
+
+  /*User.associate = function(models) {
     User.hasMany(models.Message, {
-      foreignKey : 'userId',
-    });
+      onDelete: 'cascade', 
+      hooks: true
+    })
     User.hasMany(models.Commentaire, {
-      foreignKey: 'userId',
-    });
-  };
-    /*classMethods: {
-      associate: function(models) {
-         // define association here
-      models.User.hasMany(models.Message);
-      models.User.hasMany(models.Commentaire);
-      }
-    }
-  });*/
+      onDelete: 'cascade',
+      hooks: true
+    })
+  }*/
   return User;
 };

@@ -3,31 +3,19 @@
 module.exports = (sequelize, DataTypes) => {
   var Commentaire = sequelize.define('Commentaire', {
       commentaire: DataTypes.STRING,
-      userId: DataTypes.INTEGER,
-      messageId: DataTypes.INTEGER
-  }, {
-    });
-    Commentaire.associate = (models) => {
-      Commentaire.belongsTo(models.User, {
-        foreignKey: 'userId',
-      });
+  });
 
-      Commentaire.belongsTo(models.Message, {
+  Commentaire.associate = (models) => {
+    Commentaire.belongsTo(models.Message, {
       foreignKey: 'messageId',
-      });
-    };
+      as: 'message',
+    })
 
-    /*classMethods: {
-      associate: function(models) {
-         // define association here
-     models.Commentaire.belongsTo(models.User, {
-        foreignKey: 'userId'
-      });
-      models.Commentaire.belongsTo(models.Message, {
-        foreignKey: 'messageId'
-      })
-    }
+    Commentaire.belongsTo(models.User, {
+      foreignKey: 'userId',
+      as: 'user',
+    })
   }
-});*/
+
   return Commentaire;
 };

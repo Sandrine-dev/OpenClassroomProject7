@@ -80,8 +80,6 @@ module.exports = {
         
     //login route
     login: function(req, res) {
-
-        
         
         //Params
         var email = req.body.email;
@@ -150,7 +148,7 @@ module.exports = {
 
         // récupéréer l'autorisation
         var headerAuth  = req.headers['authorization'];
-        var userId      = jwtUtils.getUserId(headerAuth);
+        var userId = jwtUtils.getUserId(headerAuth);
     
         // Params
         var poste = req.body.poste;
@@ -198,6 +196,15 @@ module.exports = {
         var email = req.body.email;
         var password = req.body.password;
 
+        console.log(req.body);
+
+        console.log(email);
+        console.log(password);
+
+        if (email == null || password == null) {
+            return res.status(400).json({msg: 'paramètre manquant' })
+        }
+
         models.User.findOne({
             where: {id: userId}
         })
@@ -206,6 +213,7 @@ module.exports = {
             if (userFound) {
                 bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
                     if (resBycrypt) {
+                        //Ajouter la suppression de tous les messages et commentaires laisser par l'utilisateur 
                         var image = userFound.photo;
                         fs.unlink(`${image}`, () => {
                             userFound.destroy()

@@ -5,12 +5,12 @@
         <section class="userInfo">
             <div class="card">
                 <div class="card-body">
-                    <h4>Votre êtes <span>{{user.poste}}</span> </h4>
+                    <h4>Votre poste <span>{{user.poste}}</span> </h4>
                     <div class="d-flex align-items-start flex-column form-group">
                         <label for="newBio" class="input-label">Modifier votre poste:</label>
                         <input type="text" name="Poste" id="Poste" class="form-control" v-model="poste" v-on:input="poste = $event.target.value">
                     </div>
-                    <button type="submit" class="btn btn-primary w-35" @click="updateUserPoste(poste)">Valider</button>
+                    <button type="submit" class="btn btn-groupomania w-35" @click="updateUserPoste(poste)">Valider</button>
 
                 </div>
             </div>
@@ -22,10 +22,10 @@
                         <label for="formFileSm" class="form-label d-flex align-items-start">Ajoutez une photo de profile</label>
                         <input class="form-control form-control-sm" type="file" id="file" ref="fileInput" v-on:change="onFileUpload">
                     </div>
-                    <button type="submit" class="btn btn-primary w-35" @click="updateUserImage()" value="Valider">Valider</button>
+                    <button type="submit" class="btn btn-groupomania w-35" @click="updateUserImage()" value="Valider">Valider</button>
                 </div>    
             </div>
-            <!--<div class="card card-end">
+            <div class="card card-end">
                 <div class="card-body">
                     <h4>Supprimer votre compte</h4>
                     <form action="">
@@ -39,20 +39,21 @@
                         </div>
                         <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
                         <div class="form-group d-flex justify-content-center">
-                            <button class="btn btn-primary w-35" @click="Supprimer">Supprimer</button>
+                            <button class="btn btn-groupomania w-35" @click="deleteUserProfile()">Supprimer</button>
 
                         </div>
                     </form>
                 </div>
-            </div>-->
+            </div>
         </section>
     </div>
     
-</template>
+</template> 
 
 <script>
 
 import Axios from 'axios';
+
 
 export default {
     data () {
@@ -62,6 +63,9 @@ export default {
             user: '',
             fileToDisplay: '',
             response: [],
+            email: '',
+            password: '',
+            msg:'',
         }
     },
 
@@ -106,9 +110,25 @@ export default {
             return this.user;
             })
             .catch((error) => {
-            console.log(error);
+            console.log(error); 
             });
-        }
+        },
+
+        deleteUserProfile: function() {
+            //console.log(this);
+            Axios
+            .delete ('http://localhost:3000/api/profile/' + this.user.id, { 
+                data: {password: this.password, email: this.email}
+            })
+            .then (() => {
+                console.log('utilisateur supprimé')
+            })
+            .catch((error) => {
+                console.log('impossible de supprimé cet utilisateur');
+                console.log(error.response.data.msg);
+            })    
+                    
+        },
     }
     
 }

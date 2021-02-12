@@ -2,33 +2,33 @@
   <div class="about">
 
     <section class="PostMessage">
+      <h2 class="titre">Partagez votre acutalités</h2>
       <div class="container newMessage">
-    <div class="card">
-      <div class="card-body">
-        <form action="" class="panel panel-default">
-            <div class="d-flex align-items-start flex-column form-group">
-              <label for="text" class="panel-heading form-label">Nouveau message</label>
-              <textarea type="message" class="panel-body container-fluid form-control" placeholder="nouveau message" rows="3" v-model="message" v-on:input="message = $event.target.value"></textarea>
-            </div>
-            <div class="mb-3 align-items-start">
-              <label for="formFileSm" class="form-label d-flex align-items-start">Ajoutez une image</label>
-              <input class="form-control form-control-sm" type="file" id="file" ref="fileInput" v-on:change="onFileUpload">
-            </div>
-            <div class="d-flex panel-footer form-group">
-              <button class="btn btn-primary w-35" @click="createMessage(message)" type="submit" value="Publier">Publier</button>
-
-            </div>
-        </form>
+        <div class="card">
+          <div class="card-body">
+            <form action="" class="panel panel-default">
+              <div class="d-flex align-items-start flex-column form-group">
+                <label for="text" class="panel-heading form-label">Nouveau message</label>
+                <textarea type="message" class="panel-body container-fluid form-control" placeholder="nouveau message" rows="3" v-model="message" v-on:input="message = $event.target.value"></textarea>
+              </div>
+              <div class="mb-3 align-items-start">
+                <label for="formFileSm" class="form-label d-flex align-items-start">Ajoutez une image</label>
+                <input class="form-control form-control-sm" type="file" id="file" ref="fileInput" v-on:change="onFileUpload">
+              </div>
+              <div class="d-flex panel-footer form-group">
+                <button class="btn btn-groupomania w-35" @click="createMessage(message)" type="submit" value="Publier">Publier</button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
     </section>
 
     <section class="Actu">
       <h2 class="titre">Actualités de vos collègues</h2>
 
       <div class="container wallMessage">
-        <Post v-for="message in response" :key="message.id" :message="message.message" :fileToDisplay="message.attachement" :userId="message.userId" :messageId="message.id" :createdAt="message.createdAt" class="allPost"></Post>
+        <Post v-for="message in response" :key="message.id" :message="message.message" :fileToDisplay="message.attachement" :user_nom="message.user.nom" :user_prenom="message.user.prenom" :user_photo='message.user.photo' :userId="message.userId" :messageId="message.id" :createdAt="message.createdAt" class="allPost"></Post>
       </div>
     </section>
   </div>

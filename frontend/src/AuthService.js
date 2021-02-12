@@ -35,9 +35,10 @@ export default {
   },
 
   //Suppression
-  deleteUserProfile(id) {
+  deleteUserProfile(credentials) {
+    console.log(this);
     return axios
-      .delete(url + 'profile/me', id)
+      .delete(url + 'profile/' + this.user.id, credentials)
       .then(response => response.data);
   },
 
@@ -61,7 +62,7 @@ export default {
   //Supprimer
   deleteMessage(id) {
     return axios
-      .delete(url + 'messages/' , id )
+      .delete(url + 'messages/' + this.id , id )
       .then(response => response.data);
   },
 
@@ -75,8 +76,18 @@ export default {
       .then(response => response.data);
   },
 
+  listCommentaire(get) {
+    return axios
+      .get(url + ':messageId/comment', get)
+      .then(response => response.data);
+  },
 
-  //Like
+  deleteCommentaire(id) {
+    return axios
+      .delete(url + 'comment/' + this.id , id )
+      .then(response => response.data);
+  },
+
 
   //display if you are login
 
