@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 11 nov. 2020 à 13:35
+-- Généré le : mar. 16 fév. 2021 à 09:04
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -51,23 +51,12 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `message` varchar(255) NOT NULL,
-  `image_url` varchar(255) DEFAULT NULL,
-  `image_alt` varchar(255) DEFAULT NULL,
-  `likes` int(11) NOT NULL,
+  `attachement` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `messages`
---
-
-INSERT INTO `messages` (`id`, `userId`, `message`, `image_url`, `image_alt`, `likes`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 'Voici mon message', NULL, NULL, 0, '2020-11-11 10:41:46', '2020-11-11 10:41:46'),
-(2, 1, 'Un nouveau message', NULL, NULL, 0, '2020-11-11 13:23:39', '2020-11-11 13:23:39'),
-(3, 1, 'Et en voici encore un autre', NULL, NULL, 0, '2020-11-11 13:23:50', '2020-11-11 13:23:50');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -105,20 +94,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `prenom` varchar(255) NOT NULL,
   `poste` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
-  `photo_url` varchar(255) DEFAULT NULL,
-  `photo_alt` varchar(255) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT NULL,
+  `isAdmin` tinyint(1) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `nom`, `prenom`, `poste`, `password`, `photo_url`, `photo_alt`, `createdAt`, `updatedAt`) VALUES
-(1, 'Alice.green@outlook.fr', 'Green', 'Alice', NULL, '$2b$05$sMCCIuFxnJ0/DG47FfJU2OnfhQAqxGmUrkHO6zNDYee3AFMA6zDtC', NULL, NULL, '2020-11-11 10:40:16', '2020-11-11 10:40:16');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contraintes pour les tables déchargées
@@ -128,14 +110,14 @@ INSERT INTO `users` (`id`, `email`, `nom`, `prenom`, `poste`, `password`, `photo
 -- Contraintes pour la table `commentaires`
 --
 ALTER TABLE `commentaires`
-  ADD CONSTRAINT `commentaires_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `commentaires_ibfk_2` FOREIGN KEY (`messageId`) REFERENCES `messages` (`id`);
+  ADD CONSTRAINT `commentaires_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `commentaires_ibfk_2` FOREIGN KEY (`messageId`) REFERENCES `messages` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `messages`
 --
 ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
