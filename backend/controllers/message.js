@@ -120,10 +120,11 @@ module.exports = {
         .then(function(messageFound){
             if(messageFound) {
 
+
                 var isAdmin = req.body.isAdmin;
-                //console.log(userId);
                 
-                if (isAdmin === 1 || userId){
+                
+                if (isAdmin === 1 || userId ){
                     //console.log(messageFound);
                     var image = messageFound.attachement;
                     //console.log(`images/${image}`);

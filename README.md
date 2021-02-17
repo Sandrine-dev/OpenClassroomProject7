@@ -1,11 +1,11 @@
 # Installation
 
-Copier se repository, puis :
+Copier ce repository, puis :
 
 ## *Backend*
 
 - Ouvrez le terminal sur dossier Backend et écrivez la commande:
-    'npm install -g nodemon'
+    'npm install'
 - Une fois intallé, écrivez la commande:
     'nodemon server'
 - Gardez ce terminal ouvert
@@ -20,7 +20,7 @@ Copier se repository, puis :
 
 ## *DataBase*
 
-Les instructions pour créer la base de données se trouve dans le fichier BDD.sql
+Les instructions pour créer la base de données se trouvent dans le fichier BDD.sql
 
 ## *Application*
 
