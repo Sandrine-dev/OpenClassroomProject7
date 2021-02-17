@@ -5,9 +5,9 @@ Copier se repository, puis :
 ## *Backend*
 
 - Ouvrez le terminal sur dossier Backend et écrivez la commande:
-    'npm install'
+    'npm install -g nodemon'
 - Une fois intallé, écrivez la commande:
-    'npm start'
+    'nodemon server'
 - Gardez ce terminal ouvert
 
 ## *Frontend*
@@ -20,11 +20,7 @@ Copier se repository, puis :
 
 ## *DataBase*
 
-- Ouvrez le terminal sur le dossier Backend et écrivez la commande:
-    'sequelize db:create'
-- une fois fait, écrivez la commander:
-    'sequelize db:migrate'
-- Vous pouvez fermer ce terminale
+Les instructions pour créer la base de données se trouve dans le fichier BDD.sql
 
 ## *Application*
 
