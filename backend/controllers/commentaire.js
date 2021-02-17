@@ -116,7 +116,7 @@ module.exports = {
 
                 var isAdmin = req.body.isAdmin;
                 
-                if (isAdmin === 1 || userId === user.id ){
+                if (isAdmin === 1 || commentsFound.userId === userId ){
                     
                     commentsFound.destroy();
 
