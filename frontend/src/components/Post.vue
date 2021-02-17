@@ -13,7 +13,7 @@
         <div class="content">
             <p>{{message}}</p>
             <img v-bind:src= "fileToDisplay" class="img-fluid">
-            <p class="card-text"><small class="text-muted"> Publiez le: {{createdAt}}</small></p>
+            <p class="card-text"><small class="text-muted"> Publié le: {{createdAt}}</small></p>
         </div>
      
 

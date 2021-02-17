@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <h4>Votre poste <span>{{user.poste}}</span> </h4>
                     <div class="d-flex align-items-start flex-column form-group">
-                        <label for="newBio" class="input-label">Modifier votre poste:</label>
+                        <label for="newBio" class="input-label">Modifiez votre poste:</label>
                         <input type="text" name="Poste" id="Poste" class="form-control" v-model="poste" v-on:input="poste = $event.target.value">
                     </div>
                     <button type="submit" class="btn btn-groupomania w-35" @click="updateUserPoste(poste)">Valider</button>
@@ -27,7 +27,7 @@
             </div>
             <div class="card card-end">
                 <div class="card-body">
-                    <h4>Supprimer votre compte</h4>
+                    <h4>Supprimez votre compte</h4>
                     <form action="">
                         <div class="d-flex align-items-start flex-column form-group">
                             <label for="email" class="input-label" required>Email</label>
@@ -114,6 +114,7 @@ export default {
             });
         },
 
+
         deleteUserProfile: function() {
             //console.log(this);
             Axios
@@ -122,7 +123,7 @@ export default {
             })
             .then (() => {
                 //console.log('utilisateur supprimé');
-                this.$router.push("/");
+                this.$router.push('/signup')
             })
             .catch((error) => {
                 console.log('impossible de supprimé cet utilisateur');

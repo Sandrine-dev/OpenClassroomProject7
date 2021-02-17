@@ -2,7 +2,7 @@
   <div class="about">
 
     <section class="PostMessage">
-      <h2 class="titre">Partagez votre actualités</h2>
+      <h2 class="titre">Partagez votre actualité</h2>
       <div class="container newMessage">
         <div class="card">
           <div class="card-body">
@@ -25,7 +25,7 @@
     </section>
 
     <section class="Actu">
-      <h2 class="titre">Actualités de vos collègues</h2>
+      <h2 class="titre">Actualité de vos collègues</h2>
 
       <div class="container wallMessage">
         <Post v-for="message in response" :key="message.id" :message="message.message" :fileToDisplay="message.attachement" :user_nom="message.user.nom" :user_prenom="message.user.prenom" :user_photo='message.user.photo' :userId="message.userId" :messageId="message.id" :createdAt="message.createdAt" class="allPost"></Post>
