@@ -123,7 +123,9 @@ export default {
             })
             .then (() => {
                 //console.log('utilisateur supprimé');
-                this.$router.push('/signup')
+                this.$store.dispatch("logout").then(() => {
+                    this.$router.push("/");
+                });
             })
             .catch((error) => {
                 console.log('impossible de supprimé cet utilisateur');
