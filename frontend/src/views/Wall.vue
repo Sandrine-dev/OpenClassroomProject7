@@ -2,7 +2,7 @@
   <div class="about">
 
     <section class="PostMessage">
-      <h2 class="titre">Partagez votre acutalités</h2>
+      <h2 class="titre">Partagez votre actualités</h2>
       <div class="container newMessage">
         <div class="card">
           <div class="card-body">

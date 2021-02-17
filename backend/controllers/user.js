@@ -128,7 +128,7 @@ module.exports = {
             return res.status(400).json({ msg : 'Session expiré '});
         
         models.User.findOne({
-            attributes: ['id', 'email', 'nom','prenom', 'poste', 'photo'],
+            attributes: ['id', 'email', 'nom','prenom', 'poste', 'photo', 'isAdmin'],
             where: { id: userId }
 
         })

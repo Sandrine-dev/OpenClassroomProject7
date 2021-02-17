@@ -39,7 +39,7 @@
                         </div>
                         <p v-if="msg" class="d-flex justify-content-center">{{msg}}</p>
                         <div class="form-group d-flex justify-content-center">
-                            <button class="btn btn-groupomania w-35" @click="deleteUserProfile()">Supprimer</button>
+                            <button class="btn btn-groupomania w-35" @click="deleteUserProfile">Supprimer</button>
 
                         </div>
                     </form>
@@ -121,14 +121,17 @@ export default {
                 data: {password: this.password, email: this.email}
             })
             .then (() => {
-                console.log('utilisateur supprimé')
+                //console.log('utilisateur supprimé');
+                this.$router.push("/");
             })
             .catch((error) => {
                 console.log('impossible de supprimé cet utilisateur');
                 console.log(error.response.data.msg);
-            })    
+            })   
+            
                     
         },
+
     }
     
 }

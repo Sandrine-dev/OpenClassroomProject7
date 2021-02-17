@@ -1,24 +1,31 @@
-# frontend
+# Installation
 
-## Project setup
-```
-npm install
-```
+Copier se repository, puis :
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## *Backend*
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Ouvrez le terminal sur dossier Backend et écrivez la commande:
+    'npm install'
+Une fois intallé, écrivez la commande:
+    'npm start'
+Gardez ce terminal ouvert
 
-### Lints and fixes files
-```
-npm run lint
-```
+## *Frontend*
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Ouvrez le terminal sur dossier frontend et écrivez la commande:
+    'npm install'
+Une fois intallé, écrivez la commande:
+    'npm run serve'
+Gardez ce terminal ouvert
+
+## *DataBase*
+
+Ouvrez le terminal sur le dossier Backend et écrivez la commande:
+    'sequelize db:create'
+une fois fait, écrivez la commander:
+    'sequelize db:migrate'
+Vous pouvez fermer ce terminale
+
+## *Application*
+
+    Ouvrez l'application sur http://localhost:8080/

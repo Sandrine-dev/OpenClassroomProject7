@@ -104,7 +104,7 @@ module.exports = {
 
         //Params
 
-        console.log(user.id);
+        //console.log(user.id);
         
         models.Commentaire.findOne({
             where: {id: req.params.id}
@@ -116,7 +116,7 @@ module.exports = {
 
                 var isAdmin = req.body.isAdmin;
                 
-                if (isAdmin === 1 || userId ){
+                if (isAdmin === 1 || userId === user.id ){
                     
                     commentsFound.destroy();
 

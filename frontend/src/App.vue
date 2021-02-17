@@ -10,6 +10,7 @@
       <router-view/>
     </div>
 
+
     <div id="footer"> 
       <footerPage></footerPage>
 
@@ -79,7 +80,8 @@
       color: white;
 
       &.router-link-exact-active {
-        color: #cd515a;
+        font-weight: normal;
+        text-decoration: underline;
       }
     }
   }

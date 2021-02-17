@@ -3,7 +3,6 @@
     <div class="allMessage card">
         <div class="user card-header d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center">
-            <img class="avatar" :src="user_photo">
             <p>{{user_nom}} {{user_prenom}}</p>
           </div>
           <div> 
@@ -77,6 +76,7 @@
           commentaire: commentaire})
         .then(() => {
           console.log('le commentaire c\'est envoyé');
+          this.allComments();
         })
         .catch(() =>{
           console.log('le commentaire ne c\'est pas envoyé');
@@ -134,11 +134,7 @@
   .padding{
     padding-bottom: 15px;
   }
-  .avatar{
-    width: 35px;
-    margin-right: 5px;
-    border-radius: 50%;
-  }
+  
 
   .user p {
     font-size: 20px;
