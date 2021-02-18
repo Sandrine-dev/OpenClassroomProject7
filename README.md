@@ -2,6 +2,19 @@
 
 Copier ce repository, puis :
 
+## *configuration DataBase*
+
+- Allez dans le fichier config, puis config.json
+- renseignez les identifiants
+    host
+    user
+    password
+
+- Ouvrez le terminale sur le dossier Backend et écrivez la commande suivant (vous devez au préalable avoir mySQL sur votre ordinateur):
+    'sequelize db:create'
+- Puis la commande suivante:
+    'sequelize db:migrate'
+
 ## *Backend*
 
 - Ouvrez le terminal sur dossier Backend et écrivez la commande:
@@ -17,10 +30,6 @@ Copier ce repository, puis :
 - Une fois intallé, écrivez la commande:
     'npm run serve'
 - Gardez ce terminal ouvert
-
-## *DataBase*
-
-Les instructions pour créer la base de données se trouvent dans le fichier BDD.sql
 
 ## *Application*
 
